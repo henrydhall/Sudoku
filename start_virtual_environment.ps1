@@ -1,0 +1,1 @@
+.\sudoku_env\Scripts\Activate.ps1
