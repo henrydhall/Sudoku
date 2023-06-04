@@ -1,0 +1,26 @@
+table
+{
+    width: 54%;
+    aspect-ratio: 1/1;
+    font-size: 40px;
+    border: 3px solid black;
+    text-align: center;
+}
+
+th
+{
+    aspect-ratio: 1/1;
+    border: 1px solid black;
+}
+
+td
+{
+    border: 1px solid black;
+    aspect-ratio: 1/1;
+    width: 6%;
+}
+
+td .content
+{
+    aspect-ratio: 1/1;
+}

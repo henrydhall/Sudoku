@@ -6,5 +6,8 @@ Experimenting with solving and generating Sudoku puzzles with Python.
 
 ## TODO
 * Make a suitable page for a sudoku to be sent to.
+* Make table more readable with lines.
+* Figure out how to encode sudoku.
+* Figure out how to get sudokus input, and solved.
 * Make sudokus.
 * Update todo's
