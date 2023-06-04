@@ -1,2 +1,2 @@
 $env:FLASK_APP="sudoku.py"   
-flask run
+flask run --debug
