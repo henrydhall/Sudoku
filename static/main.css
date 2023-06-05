@@ -24,3 +24,8 @@ td .content
 {
     aspect-ratio: 1/1;
 }
+
+textarea
+{
+    font-family: "Arial";
+}

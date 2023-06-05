@@ -5,16 +5,14 @@
 
 {% block page_content %}
 
-<table>
-    <tbody>
-        {% for i in range(0,9) %}
-            <tr>
-                {% for j in range(0,9) %}
-                    <td>{{ numbers[ i*9 + j ] }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<h1>Puzzle Solve Helper</h1>
+
+<p>Input a puzzle below. Use numbers for numbers, and any other character for blanks spaces.</p>
+<p>Hit enter for a new row.</p>
+
+<form>
+    <textarea id="sudokuinput" name="sudokuinput" cols="9" rows="9"></textarea>
+    <input type="submit" value="Submit"> <!--TODO: get stuff submitted-->
+</form>
 
 {% endblock %}
