@@ -85,11 +85,64 @@ class SudokuSolver:
                     self.possibilities[i].pop( self.possibilities[i].index( number ) )
                 i = i+9
 
-    def reduce_group(self, group_number):
-        print('TODO: reduce group')
+    def get_group_start_index(self, group_number) -> int:
+        if group_number == 0:
+            return 0
+        elif group_number == 1:
+            return 3
+        elif group_number == 2:
+            return 6
+        elif group_number == 3:
+            return 27
+        elif group_number == 4:
+            return 30
+        elif group_number == 5:
+            return 33
+        elif group_number == 6:
+            return 54
+        elif group_number == 7:
+            return 57
+        elif group_number == 8:
+            return 60
+
+    def reduce_group(self, group_number) -> None:
+        
+        i = self.get_group_start_index(group_number)
+        numbers_to_eliminate = []
+
+        for j in range(0,3):
+            if len( self.possibilities[i] ) == 1:
+                numbers_to_eliminate.append( self.possibilities[i][0] )
+            i = i+1
+            if len( self.possibilities[i] ) == 1:
+                numbers_to_eliminate.append( self.possibilities[i][0] )
+            i = i+1
+            if len( self.possibilities[i] ) == 1:
+                numbers_to_eliminate.append( self.possibilities[i][0] )
+            i = i+7
+
+        for number in numbers_to_eliminate:
+            i = self.get_group_start_index(group_number)
+            for j in range(0,3):
+                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
+                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
+                i = i+1
+                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
+                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
+                i = i+1
+                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
+                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
+                i = i+7
+
+    def find_unique_possibilities_by_group(self, group_number) -> None:
+        pass
+
+    def number_of_possibilites(self) -> int:
+        raise NotImplementedError('number_of_possiblities not implemented.')
 
 if __name__ == '__main__':
-    puzzle = '**14*28**\
+    puzzle = \
+'**14*28**\
 **41*57**\
 5*******3\
 71*5***82\
