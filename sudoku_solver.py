@@ -33,14 +33,20 @@ class SudokuSolver:
     def solve(self) -> list:
         print('TODO: solve')
 
-    def build_possibilities(self) -> list:
+    def build_possibilities(self) -> None:
         self.possibilities = [ [ str(i) for i in range(1,10) ] for i in range(0,81) ]
         for i in range(0,81):
             if self.puzzle_array[i] != ' ':
-                self.possibilities[i] = self.puzzle_array[i]
+                self.possibilities[i] = [ self.puzzle_array[i] ]
 
         for i in range(0,9):
             self.reduce_row(i)
+
+        for i in range(0,9):
+            self.reduce_column(i)
+
+        for i in range(0,9):
+            self.reduce_group(i)
         
         print((self.possibilities)) #TODO: get rid of this
 
@@ -51,21 +57,39 @@ class SudokuSolver:
 
         while i < (row_number*9) + 9:
             if len( self.possibilities[i] ) == 1:
-                numbers_to_eliminate.append( self.possibilities[i] )
+                numbers_to_eliminate.append( self.possibilities[i][0] )
             i = i+1
 
         for number in numbers_to_eliminate:
             i = row_number*9
             while i < (row_number*9) + 9:
-                if len( self.possibilities[i] ) != 1:
+                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
                     self.possibilities[i].pop( self.possibilities[i].index( number ) )
                 i = i+1
 
     def reduce_column(self, column_number):
-        print('TODO: reduce columns')
+
+        i = column_number
+
+        numbers_to_eliminate = []
+        
+        while i < 81:
+            if len(self.possibilities[i]) == 1:
+                numbers_to_eliminate.append( self.possibilities[i][0] )
+            i = i+9
+
+        for number in numbers_to_eliminate:
+            i = column_number
+            while i < 81:
+                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
+                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
+                i = i+9
+
+    def reduce_group(self, group_number):
+        print('TODO: reduce group')
 
 if __name__ == '__main__':
-    puzzle = '**14728**\
+    puzzle = '**14*28**\
 **41*57**\
 5*******3\
 71*5***82\
