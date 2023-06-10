@@ -29,7 +29,40 @@ class SudokuSolver:
         sudoku_string = sudoku_string + '|\n --- --- ---'
 
         return sudoku_string
+    
+    def solve(self) -> list:
+        print('TODO: solve')
 
+    def build_possibilities(self) -> list:
+        self.possibilities = [ [ str(i) for i in range(1,10) ] for i in range(0,81) ]
+        for i in range(0,81):
+            if self.puzzle_array[i] != ' ':
+                self.possibilities[i] = self.puzzle_array[i]
+
+        for i in range(0,9):
+            self.reduce_row(i)
+        
+        print((self.possibilities)) #TODO: get rid of this
+
+    def reduce_row( self, row_number ) -> None:
+        i = row_number * 9
+
+        numbers_to_eliminate = []
+
+        while i < (row_number*9) + 9:
+            if len( self.possibilities[i] ) == 1:
+                numbers_to_eliminate.append( self.possibilities[i] )
+            i = i+1
+
+        for number in numbers_to_eliminate:
+            i = row_number*9
+            while i < (row_number*9) + 9:
+                if len( self.possibilities[i] ) != 1:
+                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
+                i = i+1
+
+    def reduce_column(self, column_number):
+        print('TODO: reduce columns')
 
 if __name__ == '__main__':
     puzzle = '**14728**\
@@ -43,4 +76,5 @@ if __name__ == '__main__':
 **72614**'
     #print(puzzle)
     my_puz = SudokuSolver(puzzle)
-    print( my_puz )
+    #print( my_puz )
+    my_puz.build_possibilities()
