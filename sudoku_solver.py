@@ -12,8 +12,6 @@ class SudokuSolver:
             processor = processor + 1
         self.puzzle_array = puzzle_array
         self.puzzle_string = sudoku_string_
-        #print(len(self.puzzle_array))
-        #print( self.puzzle_array )
     
     def __str__(self) -> str:
         sudoku_string = ' --- --- ---\n'
@@ -29,9 +27,13 @@ class SudokuSolver:
         sudoku_string = sudoku_string + '|\n --- --- ---'
 
         return sudoku_string
-    
-    def solve(self) -> list:
-        print('TODO: solve')
+
+    def print_possibilities(self) -> None:
+        for i in range(81):
+            if i % 9 == 0:
+                print()
+            if len( self.possibilities[i] ) == 1:
+                print( self.possibilities[i][0], end='' )
 
     def build_possibilities(self) -> None:
         self.possibilities = [ [ str(i) for i in range(1,10) ] for i in range(0,81) ]
@@ -39,16 +41,23 @@ class SudokuSolver:
             if self.puzzle_array[i] != ' ':
                 self.possibilities[i] = [ self.puzzle_array[i] ]
 
-        for i in range(0,9):
-            self.reduce_row(i)
+        old_possibilities = self.number_of_possibilites()
+        new_possibilities = 0
+        while old_possibilities > new_possibilities:
 
-        for i in range(0,9):
-            self.reduce_column(i)
+            old_possibilities = self.number_of_possibilites()
 
-        for i in range(0,9):
-            self.reduce_group(i)
-        
-        print((self.possibilities)) #TODO: get rid of this
+            for i in range(0,9):
+                self.reduce_row(i)
+
+            for i in range(0,9):
+                self.reduce_column(i)
+
+            for i in range(0,9):
+                self.reduce_group(i)
+
+            new_possibilities = self.number_of_possibilites()
+    
 
     def reduce_row( self, row_number ) -> None:
         i = row_number * 9
@@ -138,7 +147,20 @@ class SudokuSolver:
         pass
 
     def number_of_possibilites(self) -> int:
-        raise NotImplementedError('number_of_possiblities not implemented.')
+        possibilities = 0
+
+        for i in range(0,81):
+            possibilities = possibilities + len( self.possibilities[i] )
+        return possibilities
+    
+    def get_possibilities(self) -> string:
+        possibilities = ''
+        for possibility in self.possibilities:
+            if len( possibility ) == 1:
+                possibilities = possibilities + possibility[0]
+            else:
+                possibility = possibility + ' '
+        return possibilities
 
 if __name__ == '__main__':
     puzzle = \
