@@ -4,7 +4,7 @@ class SudokuSolver:
     def __init__(self, sudoku_string_):
         puzzle_array = []
         processor = 0
-        while processor < len(sudoku_string_):
+        while processor < len(sudoku_string_) and len(puzzle_array) < 81:
             if sudoku_string_[processor].isnumeric():
                 puzzle_array.append(sudoku_string_[processor])
             else: #TODO: account for new lines when inputting puzzle
@@ -36,6 +36,7 @@ class SudokuSolver:
                 print( self.possibilities[i][0], end='' )
             else:
                 print(' ',end='')
+        print()
 
     def build_possibilities(self) -> None:
         self.possibilities = [ [ str(i) for i in range(1,10) ] for i in range(0,81) ]
@@ -225,6 +226,7 @@ if __name__ == '__main__':
     #print( my_puz )
     my_puz.build_possibilities()
     my_puz.print_possibilities()
+    print( my_puz )
 
     puzzle_2 = \
 '*******12\
