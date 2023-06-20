@@ -17,8 +17,10 @@ class SudokuSolver:
         sudoku_string = ' --- --- ---\n'
         
         for i in range( len(self.puzzle_array) ):
-            if i % 9 == 0 and i != 0:
+            if i % 27 == 0 and i != 0:
                 sudoku_string = sudoku_string + '|\n --- --- ---\n'
+            elif i % 9 == 0 and i != 0:
+                sudoku_string = sudoku_string + '|\n'
             if i % 3 == 0:
                 sudoku_string = sudoku_string + '|'
             
