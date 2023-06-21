@@ -12,6 +12,8 @@ class SudokuSolver:
             processor = processor + 1
         self.puzzle_array = puzzle_array
         self.puzzle_string = sudoku_string_
+        self.build_possibilities()
+        #TODO: check that a puzzle is valid
     
     def __str__(self) -> str:
         sudoku_string = ' --- --- ---\n'
@@ -32,7 +34,7 @@ class SudokuSolver:
 
     def print_possibilities(self) -> None:
         for i in range(81):
-            if i % 9 == 0:
+            if i % 9 == 0 and i != 0:
                 print()
             if len( self.possibilities[i] ) == 1:
                 print( self.possibilities[i][0], end='' )
