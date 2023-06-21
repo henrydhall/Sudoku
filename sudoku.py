@@ -21,6 +21,8 @@ class SudokuForm(FlaskForm):
 def index():
     name = None
     numbers = []
+    numbers = ['1' for i in range(0,81)]
+    numbers[0] = '123\n456\n789'
     return render_template('index.html', numbers = numbers)
 
 @app.route('/solve_helper',methods = ['GET','POST'])

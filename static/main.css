@@ -5,6 +5,7 @@ table
     font-size: 40px;
     border: 3px solid black;
     text-align: center;
+    table-layout: fixed;
 }
 
 th
@@ -13,17 +14,31 @@ th
     border: 1px solid black;
 }
 
-td
+
+
+td.regular
 {
     border: 1px solid black;
     aspect-ratio: 1/1;
     width: 6%;
 }
 
-td .content
+td.small
 {
-    aspect-ratio: 1/1;
+    word-wrap: break-all;
+    color: red;
+    border-collapse: collapse;
+    font-size: small;
+    margin: 0%;
 }
+
+td 
+{
+    border: 1px solid black;
+    aspect-ratio: 1/1;
+    width: 6%;
+}
+
 
 textarea
 {

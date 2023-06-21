@@ -10,7 +10,12 @@
         {% for i in range(0,9) %}
             <tr>
                 {% for j in range(0,9) %}
-                    <td>{{ numbers[ i*9 + j ] }}</td>
+                    {% if numbers[ i*9 + j ]|length != 1 %} 
+                        <td class="small">{{ numbers[ i*9 + j ] }}</td> 
+                    {% endif %}
+                    {% if numbers[ i*9 + j ]|length == 1 %} 
+                        <td class="regular">{{ numbers[ i*9 + j ] }}</td> 
+                    {% endif %}
                 {% endfor %}
             </tr>
         {% endfor %}
