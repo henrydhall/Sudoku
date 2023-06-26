@@ -15,7 +15,41 @@ class SudokuSolver:
         self.puzzle_array = puzzle_array
         self.puzzle_string = sudoku_string_
         self.build_possibilities()
+        self.check_valid_puzzle()
         #TODO: check that a puzzle is valid
+
+    def check_valid_puzzle(self) -> bool:
+        for i in range(0,9):
+            self.check_valid_block(i)
+            print(self.check_valid_row(i))
+            self.check_valid_column(i)
+    
+    def check_valid_solution(self) -> bool:
+        raise NotImplementedError('Check if things are valid')
+
+    def check_valid_block(self, block_number):
+        print('TODO: check_valid_block', block_number)
+
+    def check_valid_row(self, row_number):
+        row = self.puzzle_array[row_number*9:row_number*9+9:]
+        print( row.count('9') )
+        print(row)
+        for i in range(1,10):
+            if row.count(str(i)) > 1:
+                return False
+        return True
+    
+    def check_valid_column(self, column_number):
+        print('TODO: check_valid_column', column_number)
+    
+    def get_cell_block_number(self, cell_number):
+        raise NotImplementedError('TODO: get_cell_block_number')
+    
+    def get_cell_row_number(self, cell_number):
+        raise NotImplementedError('TODO: get_cell_row_number')
+    
+    def get_cell_column_number(self, column_number):
+        raise NotImplementedError('TODO: get_cell_column_number')
     
     def __str__(self) -> str:
         sudoku_string = ' --- --- ---\n'
@@ -229,11 +263,11 @@ if __name__ == '__main__':
 **38*79**\
 **72614**'
     #print(puzzle)
-    my_puz = SudokuSolver(puzzle_1)
+    #my_puz = SudokuSolver(puzzle_1)
     #print( my_puz )
-    my_puz.build_possibilities()
-    my_puz.print_possibilities()
-    print( my_puz )
+    #my_puz.build_possibilities()
+    #my_puz.print_possibilities()
+    #print( my_puz )
 
     puzzle_2 = \
 '*******12\
@@ -249,4 +283,6 @@ if __name__ == '__main__':
     #puz_2.build_possibilities()
     #puz_2.print_possibilities()
     #print( puz_2.get_possibilities() )
-    
+    puzzle_3 = '12345678999*******8********7********6'
+    puzzle_3 = SudokuSolver(puzzle_3)
+    print(puzzle_3)
