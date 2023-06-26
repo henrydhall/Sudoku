@@ -183,7 +183,7 @@ class SudokuSolver:
                 not_to_eliminate.append( self.possibilities[i][0] )
             i = i+7
 
-        for j in range(0,9):
+        for j in range(0,10):
             if all_possibilities.count(str(j)) == 1 and str(j) not in not_to_eliminate:
                 numbers_to_reduce.append(str(j))
 
@@ -214,6 +214,7 @@ class SudokuSolver:
                 possibilities = possibilities + possibility[0]
             else:
                 possibilities = possibilities + ' '
+        return self.possibilities
         return possibilities
 
 if __name__ == '__main__':

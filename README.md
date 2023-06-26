@@ -6,7 +6,7 @@ Experimenting with solving and generating Sudoku puzzles with Python.
 
 ## TODO
 * Make table more readable with lines between groups of 9.
-* Get sudokus.
-* Solve sudoku, return to a page.
+* Check if a puzzle is valid. 
+* Check if a solution is valid.
 * Make form prettier.
 * Update todo's
