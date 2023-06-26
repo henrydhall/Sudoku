@@ -10,6 +10,8 @@ class SudokuSolver:
             else: #TODO: account for new lines when inputting puzzle
                 puzzle_array.append(' ')
             processor = processor + 1
+        while len(puzzle_array) < 81:
+            puzzle_array.append(' ')
         self.puzzle_array = puzzle_array
         self.puzzle_string = sudoku_string_
         self.build_possibilities()
