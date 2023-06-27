@@ -20,27 +20,48 @@ class SudokuSolver:
 
     def check_valid_puzzle(self) -> bool:
         for i in range(0,9):
-            self.check_valid_block(i)
-            print(self.check_valid_row(i))
-            self.check_valid_column(i)
+            if not self.check_valid_block(i):
+                raise ValueError("Invalid puzzle. Bad block.")
+            if not self.check_valid_row(i):
+                raise ValueError("Invalid puzzle. Bad row.")
+            if not self.check_valid_column(i):
+                raise ValueError("Invalid puzzle. Bad column.")
     
     def check_valid_solution(self) -> bool:
         raise NotImplementedError('Check if things are valid')
 
     def check_valid_block(self, block_number):
-        print('TODO: check_valid_block', block_number)
+        block_start = self.get_box_start_index(block_number)
+        block = []
+        block.append( self.puzzle_array[block_start] )
+        block.append( self.puzzle_array[block_start+1] )
+        block.append( self.puzzle_array[block_start+2] )
+        block.append( self.puzzle_array[block_start+9] )
+        block.append( self.puzzle_array[block_start+10] )
+        block.append( self.puzzle_array[block_start+11] )
+        block.append( self.puzzle_array[block_start+18] )
+        block.append( self.puzzle_array[block_start+19] )
+        block.append( self.puzzle_array[block_start+20] )
+
+        for i in range(1,10):
+            if block.count(str(i)) > 1:
+                return False
+
+        return True
 
     def check_valid_row(self, row_number):
         row = self.puzzle_array[row_number*9:row_number*9+9:]
-        print( row.count('9') )
-        print(row)
         for i in range(1,10):
             if row.count(str(i)) > 1:
                 return False
         return True
     
     def check_valid_column(self, column_number):
-        print('TODO: check_valid_column', column_number)
+        column = self.puzzle_array[column_number::9]
+        for i in range(1,10):
+            if column.count(str(i)) > 1:
+                return False
+        return True
     
     def get_cell_block_number(self, cell_number):
         raise NotImplementedError('TODO: get_cell_block_number')
@@ -283,6 +304,6 @@ if __name__ == '__main__':
     #puz_2.build_possibilities()
     #puz_2.print_possibilities()
     #print( puz_2.get_possibilities() )
-    puzzle_3 = '12345678999*******8********7********6'
+    puzzle_3 = '1234567899********8*7******7*49*****6'
     puzzle_3 = SudokuSolver(puzzle_3)
     print(puzzle_3)
