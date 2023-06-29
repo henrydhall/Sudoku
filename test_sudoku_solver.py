@@ -69,9 +69,56 @@ def test_find_unique_possibilities():
     test_puzzle_3 = sudoku_solver.SudokuSolver(test_puzzle_string_3)
     assert test_puzzle_3.possibilities[2] == ['6']
 
+def test_print_possibilities():
+    test_puzzle_string_1 = '12*******3********45*********6************************************************************'
+    test_puzzle_1 = sudoku_solver.SudokuSolver(test_puzzle_string_1)
+    test_puzzle_1.print_possibilities()
+    # TODO: figure out how to test the print. I say don't do it...
+
+def test_check_valid_puzzle():
+    test_puzzle_strings = [ '123456789..................1',
+                            '123456789...................2',
+                            '123456789....................3',
+                            '123456789.....................4',
+                            '123456789......................5',
+                            '123456789.......................6',
+                            '123456789........................7',
+                            '123456789.........................8',
+                            '123456789..........................9',
+                            '123456789..1...............',
+                            '123456789..2................',
+                            '123456789.3..................',
+                            '123456789....4................',
+                            '123456789.....5................',
+                            '123456789....6..................',
+                            '123456789........7...............',
+                            '123456789.......8.................',
+                            '123456789......9...................',
+                            '1..1',
+                            '2..2',
+                            '3..3',
+                            '4..4',
+                            '5..5',
+                            '6..6',
+                            '7..7',
+                            '8..8',
+                            '9..9',
+                            ]
+    errors = []
+    for puzzle in test_puzzle_strings:
+        try:
+            new_puzzle = sudoku_solver.SudokuSolver(puzzle)
+            errors.append(puzzle)
+        except ValueError:
+            errors.append('Error')
+    for thing in errors:
+        assert thing == 'Error'
+
 if __name__ == '__main__':
     test_SudokuSolver()
     test_str_1()
     test_str_2()
     test_build_possibilities()
     test_find_unique_possibilities()
+    #test_print_possibilities()
+    test_check_valid_puzzle()

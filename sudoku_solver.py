@@ -307,3 +307,4 @@ if __name__ == '__main__':
     puzzle_3 = '1234567899********8*7******7*49*****6'
     puzzle_3 = SudokuSolver(puzzle_3)
     print(puzzle_3)
+    my_sudoku = SudokuSolver('1234567891................1')
