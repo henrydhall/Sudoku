@@ -46,6 +46,25 @@ f''' --- --- ---
  --- --- ---'''
     assert str(test_puzzle) == test_string
 
+def test_str_3():
+    puzzle_string = '1****************************\n*************************************************************'
+    test_puzzle = sudoku_solver.SudokuSolver( puzzle_string )
+    test_string = \
+f''' --- --- ---
+|1  |   |   |
+|   |   |   |
+|   |   |   |
+ --- --- ---
+|   |   |   |
+|   |   |   |
+|   |   |   |
+ --- --- ---
+|   |   |   |
+|   |   |   |
+|   |   |   |
+ --- --- ---'''
+    assert str(test_puzzle) == test_string
+
 #TODO: mess around with formats, newlines, etc.
 
 def test_build_possibilities():
@@ -114,11 +133,33 @@ def test_check_valid_puzzle():
     for thing in errors:
         assert thing == 'Error'
 
+def test_get_reduced_puzzle():
+    test_string = '12345678.'
+    test_puzzle = sudoku_solver.SudokuSolver(test_string)
+    assert test_puzzle.get_reduced_puzzle() == '123456789........................................................................'
+
+    test_string = '.2345678.9'
+    test_puzzle = sudoku_solver.SudokuSolver(test_string)
+    assert test_puzzle.get_reduced_puzzle() == '1234567899.......................................................................'
+    #TODO: expand testing for this.
+
+def test_check_valid_solution():
+    test_string = '.234567891'
+    test_puzzle = sudoku_solver.SudokuSolver(test_string)
+    assert test_puzzle.check_valid_solution() is False
+
+    test_string = '.23456789'
+    test_puzzle = sudoku_solver.SudokuSolver(test_string)
+    assert test_puzzle.check_valid_solution() is True
+
 if __name__ == '__main__':
     test_SudokuSolver()
     test_str_1()
     test_str_2()
+    test_str_3()
     test_build_possibilities()
     test_find_unique_possibilities()
     #test_print_possibilities()
     test_check_valid_puzzle()
+    test_get_reduced_puzzle()
+    #test_check_valid_solution()
