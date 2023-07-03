@@ -7,18 +7,22 @@ class SudokuSolver:
         while processor < len(sudoku_string_) and len(puzzle_array) < 81:
             if sudoku_string_[processor].isnumeric():
                 puzzle_array.append(sudoku_string_[processor])
-            else: #TODO: account for new lines when inputting puzzle
+            elif sudoku_string_[processor] == '\n' or sudoku_string_[processor] == '\r':
+                # This was tricky. HTML form newlines aren't \n, they are \r
+                pass
+            else:
                 puzzle_array.append(' ')
             processor = processor + 1
         while len(puzzle_array) < 81:
             puzzle_array.append(' ')
         self.puzzle_array = puzzle_array
         self.puzzle_string = sudoku_string_
-        self.build_possibilities()
         self.check_valid_puzzle()
-        #TODO: check that a puzzle is valid
+        self.build_possibilities()
+        #if self.check_valid_solution() is False:
+        #    pass #TODO: come up with error handling...see if we can make this not so slow
 
-    def check_valid_puzzle(self) -> bool:
+    def check_valid_puzzle(self) -> None:
         for i in range(0,9):
             if not self.check_valid_block(i):
                 raise ValueError("Invalid puzzle. Bad block.")
@@ -28,7 +32,11 @@ class SudokuSolver:
                 raise ValueError("Invalid puzzle. Bad column.")
     
     def check_valid_solution(self) -> bool:
-        raise NotImplementedError('Check if things are valid')
+        try:
+            temp_puzzle = SudokuSolver( self.get_reduced_puzzle() )
+            return True
+        except:
+            return False
 
     def check_valid_block(self, block_number):
         block_start = self.get_box_start_index(block_number)
@@ -271,6 +279,15 @@ class SudokuSolver:
                 possibilities = possibilities + ' '
         return self.possibilities
         return possibilities
+    
+    def get_reduced_puzzle(self) -> string: #TODO: expand testing for this
+        reduced_puzzle = ''
+        for possibility in self.possibilities:
+            if len(possibility) == 1:
+                reduced_puzzle = reduced_puzzle + possibility[0]
+            else:
+                reduced_puzzle = reduced_puzzle + '.'
+        return reduced_puzzle
 
 if __name__ == '__main__':
     puzzle_1 = \
@@ -308,3 +325,6 @@ if __name__ == '__main__':
     puzzle_3 = SudokuSolver(puzzle_3)
     print(puzzle_3)
     my_sudoku = SudokuSolver('1234567891................1')
+    puzzle_4 = '984.31.7261...7...257..98..3...6..1....37.92...9..5....3...6....45.18.961967..28.'
+    puzzle_4 = SudokuSolver(puzzle_4)
+    #print(puzzle_4.get_reduced_puzzle())
