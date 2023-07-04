@@ -5,8 +5,10 @@ Experimenting with solving and generating Sudoku puzzles with Python.
 * Just download/clone, and I have powershell scripts right now to run it. I suppose I could set up bash or command prompt scripts as well, but for now that's what we've got.
 
 ## TODO
-* Make table more readable with lines between groups of 9.
-* Check if a puzzle is valid. 
-* Check if a solution is valid.
+* Make table more readable with lines between blocks.
+* Check if a solution is valid. We can check, just how we handle that.
+* Use solution checking to use contradiction to find solutions at dead ends.
 * Make form prettier.
 * Update todo's
+* Try \r instead of \n in webapp.
+* Give different default page.
