@@ -14,7 +14,7 @@
                         <td class="small">{{ numbers[ i*9 + j ] }}</td> 
                     {% endif %}
                     {% if numbers[ i*9 + j ]|length == 1 %} 
-                        <td class="regular">{{ numbers[ i*9 + j ] }}</td> 
+                        <td class="regular">{{ numbers[ i*9 + j ][0] }}</td> 
                     {% endif %}
                 {% endfor %}
             </tr>
