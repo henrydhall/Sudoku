@@ -1,5 +1,6 @@
 import string
 
+
 class SudokuSolver:
     def __init__(self, sudoku_string_):
         puzzle_array = []
@@ -19,21 +20,21 @@ class SudokuSolver:
         self.puzzle_string = sudoku_string_
         self.check_valid_puzzle()
         self.build_possibilities()
-        #if self.check_valid_solution() is False:
+        # if self.check_valid_solution() is False:
         #    pass #TODO: come up with error handling...see if we can make this not so slow
 
     def check_valid_puzzle(self) -> None:
-        for i in range(0,9):
+        for i in range(0, 9):
             if not self.check_valid_block(i):
                 raise ValueError("Invalid puzzle. Bad block.")
             if not self.check_valid_row(i):
                 raise ValueError("Invalid puzzle. Bad row.")
             if not self.check_valid_column(i):
                 raise ValueError("Invalid puzzle. Bad column.")
-    
+
     def check_valid_solution(self) -> bool:
         try:
-            temp_puzzle = SudokuSolver( self.get_reduced_puzzle() )
+            temp_puzzle = SudokuSolver(self.get_reduced_puzzle())
             return True
         except:
             return False
@@ -41,56 +42,56 @@ class SudokuSolver:
     def check_valid_block(self, block_number):
         block_start = self.get_box_start_index(block_number)
         block = []
-        block.append( self.puzzle_array[block_start] )
-        block.append( self.puzzle_array[block_start+1] )
-        block.append( self.puzzle_array[block_start+2] )
-        block.append( self.puzzle_array[block_start+9] )
-        block.append( self.puzzle_array[block_start+10] )
-        block.append( self.puzzle_array[block_start+11] )
-        block.append( self.puzzle_array[block_start+18] )
-        block.append( self.puzzle_array[block_start+19] )
-        block.append( self.puzzle_array[block_start+20] )
+        block.append(self.puzzle_array[block_start])
+        block.append(self.puzzle_array[block_start + 1])
+        block.append(self.puzzle_array[block_start + 2])
+        block.append(self.puzzle_array[block_start + 9])
+        block.append(self.puzzle_array[block_start + 10])
+        block.append(self.puzzle_array[block_start + 11])
+        block.append(self.puzzle_array[block_start + 18])
+        block.append(self.puzzle_array[block_start + 19])
+        block.append(self.puzzle_array[block_start + 20])
 
-        for i in range(1,10):
+        for i in range(1, 10):
             if block.count(str(i)) > 1:
                 return False
 
         return True
 
     def check_valid_row(self, row_number):
-        row = self.puzzle_array[row_number*9:row_number*9+9:]
-        for i in range(1,10):
+        row = self.puzzle_array[row_number * 9 : row_number * 9 + 9 :]
+        for i in range(1, 10):
             if row.count(str(i)) > 1:
                 return False
         return True
-    
+
     def check_valid_column(self, column_number):
         column = self.puzzle_array[column_number::9]
-        for i in range(1,10):
+        for i in range(1, 10):
             if column.count(str(i)) > 1:
                 return False
         return True
-    
+
     def get_cell_block_number(self, cell_number):
         raise NotImplementedError('TODO: get_cell_block_number')
-    
+
     def get_cell_row_number(self, cell_number):
         raise NotImplementedError('TODO: get_cell_row_number')
-    
+
     def get_cell_column_number(self, column_number):
         raise NotImplementedError('TODO: get_cell_column_number')
-    
+
     def __str__(self) -> str:
         sudoku_string = ' --- --- ---\n'
-        
-        for i in range( len(self.puzzle_array) ):
+
+        for i in range(len(self.puzzle_array)):
             if i % 27 == 0 and i != 0:
                 sudoku_string = sudoku_string + '|\n --- --- ---\n'
             elif i % 9 == 0 and i != 0:
                 sudoku_string = sudoku_string + '|\n'
             if i % 3 == 0:
                 sudoku_string = sudoku_string + '|'
-            
+
             sudoku_string = sudoku_string + self.puzzle_array[i]
 
         sudoku_string = sudoku_string + '|\n --- --- ---'
@@ -101,73 +102,70 @@ class SudokuSolver:
         for i in range(81):
             if i % 9 == 0 and i != 0:
                 print()
-            if len( self.possibilities[i] ) == 1:
-                print( self.possibilities[i][0], end='' )
+            if len(self.possibilities[i]) == 1:
+                print(self.possibilities[i][0], end='')
             else:
-                print(' ',end='')
+                print(' ', end='')
         print()
 
     def build_possibilities(self) -> None:
-        self.possibilities = [ [ str(i) for i in range(1,10) ] for i in range(0,81) ]
-        for i in range(0,81):
+        self.possibilities = [[str(i) for i in range(1, 10)] for i in range(0, 81)]
+        for i in range(0, 81):
             if self.puzzle_array[i] != ' ':
-                self.possibilities[i] = [ self.puzzle_array[i] ]
+                self.possibilities[i] = [self.puzzle_array[i]]
 
         old_possibilities = self.number_of_possibilites()
         new_possibilities = 0
         while old_possibilities > new_possibilities:
-
             old_possibilities = self.number_of_possibilites()
 
-            for i in range(0,9):
+            for i in range(0, 9):
                 self.reduce_row(i)
 
-            for i in range(0,9):
+            for i in range(0, 9):
                 self.reduce_column(i)
 
-            for i in range(0,9):
+            for i in range(0, 9):
                 self.reduce_box(i)
 
-            for i in range(0,9):
+            for i in range(0, 9):
                 self.find_unique_possibilities_by_box(i)
 
             new_possibilities = self.number_of_possibilites()
-    
 
-    def reduce_row( self, row_number ) -> None:
+    def reduce_row(self, row_number) -> None:
         i = row_number * 9
 
         numbers_to_eliminate = []
 
-        while i < (row_number*9) + 9:
-            if len( self.possibilities[i] ) == 1:
-                numbers_to_eliminate.append( self.possibilities[i][0] )
-            i = i+1
+        while i < (row_number * 9) + 9:
+            if len(self.possibilities[i]) == 1:
+                numbers_to_eliminate.append(self.possibilities[i][0])
+            i = i + 1
 
         for number in numbers_to_eliminate:
-            i = row_number*9
-            while i < (row_number*9) + 9:
-                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
-                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
-                i = i+1
+            i = row_number * 9
+            while i < (row_number * 9) + 9:
+                if len(self.possibilities[i]) != 1 and number in self.possibilities[i]:
+                    self.possibilities[i].pop(self.possibilities[i].index(number))
+                i = i + 1
 
     def reduce_column(self, column_number):
-
         i = column_number
 
         numbers_to_eliminate = []
-        
+
         while i < 81:
             if len(self.possibilities[i]) == 1:
-                numbers_to_eliminate.append( self.possibilities[i][0] )
-            i = i+9
+                numbers_to_eliminate.append(self.possibilities[i][0])
+            i = i + 9
 
         for number in numbers_to_eliminate:
             i = column_number
             while i < 81:
-                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
-                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
-                i = i+9
+                if len(self.possibilities[i]) != 1 and number in self.possibilities[i]:
+                    self.possibilities[i].pop(self.possibilities[i].index(number))
+                i = i + 9
 
     def get_box_start_index(self, box_number) -> int:
         if box_number == 0:
@@ -190,97 +188,95 @@ class SudokuSolver:
             return 60
 
     def reduce_box(self, box_number) -> None:
-        
         i = self.get_box_start_index(box_number)
         numbers_to_eliminate = []
 
-        for j in range(0,3):
-            if len( self.possibilities[i] ) == 1:
-                numbers_to_eliminate.append( self.possibilities[i][0] )
-            i = i+1
-            if len( self.possibilities[i] ) == 1:
-                numbers_to_eliminate.append( self.possibilities[i][0] )
-            i = i+1
-            if len( self.possibilities[i] ) == 1:
-                numbers_to_eliminate.append( self.possibilities[i][0] )
-            i = i+7
+        for j in range(0, 3):
+            if len(self.possibilities[i]) == 1:
+                numbers_to_eliminate.append(self.possibilities[i][0])
+            i = i + 1
+            if len(self.possibilities[i]) == 1:
+                numbers_to_eliminate.append(self.possibilities[i][0])
+            i = i + 1
+            if len(self.possibilities[i]) == 1:
+                numbers_to_eliminate.append(self.possibilities[i][0])
+            i = i + 7
 
         for number in numbers_to_eliminate:
             i = self.get_box_start_index(box_number)
-            for j in range(0,3):
-                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
-                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
-                i = i+1
-                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
-                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
-                i = i+1
-                if len( self.possibilities[i] ) != 1 and number in self.possibilities[i]:
-                    self.possibilities[i].pop( self.possibilities[i].index( number ) )
-                i = i+7
+            for j in range(0, 3):
+                if len(self.possibilities[i]) != 1 and number in self.possibilities[i]:
+                    self.possibilities[i].pop(self.possibilities[i].index(number))
+                i = i + 1
+                if len(self.possibilities[i]) != 1 and number in self.possibilities[i]:
+                    self.possibilities[i].pop(self.possibilities[i].index(number))
+                i = i + 1
+                if len(self.possibilities[i]) != 1 and number in self.possibilities[i]:
+                    self.possibilities[i].pop(self.possibilities[i].index(number))
+                i = i + 7
 
     def find_unique_possibilities_by_box(self, box_number) -> None:
-
-        #TODO: test this more, this one of all of them is the scariest so far
+        # TODO: test this more, this one of all of them is the scariest so far
         box_start = self.get_box_start_index(box_number)
         all_possibilities = []
         numbers_to_reduce = []
         not_to_eliminate = []
         i = box_start
 
-        for j in range(0,3):
-            if len( self.possibilities[i] ) > 1:
+        for j in range(0, 3):
+            if len(self.possibilities[i]) > 1:
                 all_possibilities = all_possibilities + self.possibilities[i]
             else:
-                not_to_eliminate.append( self.possibilities[i][0] )
-            i = i+1
+                not_to_eliminate.append(self.possibilities[i][0])
+            i = i + 1
 
-            if len( self.possibilities[i] ) > 1:
+            if len(self.possibilities[i]) > 1:
                 all_possibilities = all_possibilities + self.possibilities[i]
             else:
-                not_to_eliminate.append( self.possibilities[i][0] )
-            i = i+1
+                not_to_eliminate.append(self.possibilities[i][0])
+            i = i + 1
 
-            if len( self.possibilities[i] ) > 1:
+            if len(self.possibilities[i]) > 1:
                 all_possibilities = all_possibilities + self.possibilities[i]
             else:
-                not_to_eliminate.append( self.possibilities[i][0] )
-            i = i+7
+                not_to_eliminate.append(self.possibilities[i][0])
+            i = i + 7
 
-        for j in range(0,10):
+        for j in range(0, 10):
             if all_possibilities.count(str(j)) == 1 and str(j) not in not_to_eliminate:
                 numbers_to_reduce.append(str(j))
 
         for number in numbers_to_reduce:
             i = box_start
-            for j in range(0,3):
-                if len( self.possibilities[i] ) > 1 and (number in self.possibilities[i]):
+            for j in range(0, 3):
+                if len(self.possibilities[i]) > 1 and (number in self.possibilities[i]):
                     self.possibilities[i] = [number]
-                i = i+1
-                if len( self.possibilities[i] ) > 1 and (number in self.possibilities[i]):
+                i = i + 1
+                if len(self.possibilities[i]) > 1 and (number in self.possibilities[i]):
                     self.possibilities[i] = [number]
-                i = i+1
-                if len( self.possibilities[i] ) > 1 and (number in self.possibilities[i]):
+                i = i + 1
+                if len(self.possibilities[i]) > 1 and (number in self.possibilities[i]):
                     self.possibilities[i] = [number]
-                i = i+7
+                i = i + 7
 
     def number_of_possibilites(self) -> int:
         possibilities = 0
 
-        for i in range(0,81):
-            possibilities = possibilities + len( self.possibilities[i] )
+        for i in range(0, 81):
+            possibilities = possibilities + len(self.possibilities[i])
         return possibilities
-    
+
     def get_possibilities(self) -> string:
         possibilities = ''
         for possibility in self.possibilities:
-            if len( possibility ) == 1:
+            if len(possibility) == 1:
                 possibilities = possibilities + possibility[0]
             else:
                 possibilities = possibilities + ' '
         return self.possibilities
         return possibilities
-    
-    def get_reduced_puzzle(self) -> string: #TODO: expand testing for this
+
+    def get_reduced_puzzle(self) -> string:  # TODO: expand testing for this
         reduced_puzzle = ''
         for possibility in self.possibilities:
             if len(possibility) == 1:
@@ -289,9 +285,9 @@ class SudokuSolver:
                 reduced_puzzle = reduced_puzzle + '.'
         return reduced_puzzle
 
+
 if __name__ == '__main__':
-    puzzle_1 = \
-'**14*28**\
+    puzzle_1 = '**14*28**\
 **41*57**\
 5*******3\
 71*5***82\
@@ -300,15 +296,14 @@ if __name__ == '__main__':
 1*******7\
 **38*79**\
 **72614**'
-    #print(puzzle)
-    #my_puz = SudokuSolver(puzzle_1)
-    #print( my_puz )
-    #my_puz.build_possibilities()
-    #my_puz.print_possibilities()
-    #print( my_puz )
+    # print(puzzle)
+    # my_puz = SudokuSolver(puzzle_1)
+    # print( my_puz )
+    # my_puz.build_possibilities()
+    # my_puz.print_possibilities()
+    # print( my_puz )
 
-    puzzle_2 = \
-'*******12\
+    puzzle_2 = '*******12\
 *******_3\
 *******45\
 ******6**\
@@ -317,14 +312,14 @@ if __name__ == '__main__':
 *********\
 *********\
 *********'
-    #puz_2 = SudokuSolver(puzzle_2)
-    #puz_2.build_possibilities()
-    #puz_2.print_possibilities()
-    #print( puz_2.get_possibilities() )
+    # puz_2 = SudokuSolver(puzzle_2)
+    # puz_2.build_possibilities()
+    # puz_2.print_possibilities()
+    # print( puz_2.get_possibilities() )
     puzzle_3 = '1234567899********8*7******7*49*****6'
     puzzle_3 = SudokuSolver(puzzle_3)
     print(puzzle_3)
     my_sudoku = SudokuSolver('1234567891................1')
     puzzle_4 = '984.31.7261...7...257..98..3...6..1....37.92...9..5....3...6....45.18.961967..28.'
     puzzle_4 = SudokuSolver(puzzle_4)
-    #print(puzzle_4.get_reduced_puzzle())
+    # print(puzzle_4.get_reduced_puzzle())
