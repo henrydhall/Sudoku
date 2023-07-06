@@ -25,6 +25,7 @@ class SudokuSolver:
         Creates SudokuSolver class.
 
         param sudoku_string_: puzzle encoding for new puzzle.
+
         returns SudokuSolver object.
         """
         puzzle_array = []
@@ -52,8 +53,8 @@ class SudokuSolver:
         Checks that the puzzle created is valid. Raises ValueError if invalid.
         """
         for i in range(0, 9):
-            if not self.check_valid_block(i):
-                raise ValueError("Invalid puzzle. Bad block.")
+            if not self.check_valid_box(i):
+                raise ValueError("Invalid puzzle. Bad box.")
             if not self.check_valid_row(i):
                 raise ValueError("Invalid puzzle. Bad row.")
             if not self.check_valid_column(i):
@@ -72,41 +73,69 @@ class SudokuSolver:
         except:
             return False
 
-    def check_valid_block(self, block_number):
-        block_start = self.get_box_start_index(block_number)
-        block = []
-        block.append(self.puzzle_array[block_start])
-        block.append(self.puzzle_array[block_start + 1])
-        block.append(self.puzzle_array[block_start + 2])
-        block.append(self.puzzle_array[block_start + 9])
-        block.append(self.puzzle_array[block_start + 10])
-        block.append(self.puzzle_array[block_start + 11])
-        block.append(self.puzzle_array[block_start + 18])
-        block.append(self.puzzle_array[block_start + 19])
-        block.append(self.puzzle_array[block_start + 20])
+    def check_valid_box(self, box_number) -> bool:
+        """
+        Check that a box of cells is valid under sudoku rules.
 
+        param box_number: int. The number of the box to be checked.
+
+        Returns: bool. True if valid. False in invalid.
+        """
+        # Get the index of the first cell.
+        box_start = self.get_box_start_index(box_number)
+        # Create an empty list. We'll insert each cell's contents.
+        box = []
+        box.append(self.puzzle_array[box_start])
+        box.append(self.puzzle_array[box_start + 1])
+        box.append(self.puzzle_array[box_start + 2])
+        box.append(self.puzzle_array[box_start + 9])
+        box.append(self.puzzle_array[box_start + 10])
+        box.append(self.puzzle_array[box_start + 11])
+        box.append(self.puzzle_array[box_start + 18])
+        box.append(self.puzzle_array[box_start + 19])
+        box.append(self.puzzle_array[box_start + 20])
+
+        # Check to see if any numbers are duplicated. If it is, return False.
         for i in range(1, 10):
-            if block.count(str(i)) > 1:
+            if box.count(str(i)) > 1:
                 return False
 
         return True
 
-    def check_valid_row(self, row_number):
+    def check_valid_row(self, row_number) -> bool:
+        """
+        Check to see if a row is valid under sudoku rules.
+
+        param row_number: number of row to check.
+
+        Returns: bool. True if valid, False if invalid.
+        """
+        # Get a list with all the numbers in the row.
         row = self.puzzle_array[row_number * 9 : row_number * 9 + 9 :]
+        # If a number is duplicated return false.
         for i in range(1, 10):
             if row.count(str(i)) > 1:
                 return False
         return True
 
-    def check_valid_column(self, column_number):
+    def check_valid_column(self, column_number) -> bool:
+        """
+        Check if a column in the puzzle is valid.
+
+        param column_number: int. Number of column to check.
+
+        Returns: bool. True if valid. False if invalid.
+        """
+        # Make a list containing the selected column.
         column = self.puzzle_array[column_number::9]
+        # If a number is duplicated return false.
         for i in range(1, 10):
             if column.count(str(i)) > 1:
                 return False
         return True
 
-    def get_cell_block_number(self, cell_number):
-        raise NotImplementedError('TODO: get_cell_block_number')
+    def get_cell_box_number(self, cell_number):
+        raise NotImplementedError('TODO: get_cell_box_number')
 
     def get_cell_row_number(self, cell_number):
         raise NotImplementedError('TODO: get_cell_row_number')
@@ -137,6 +166,11 @@ class SudokuSolver:
         return sudoku_string
 
     def print_possibilities(self) -> None:
+        """
+        Prints solved cells and nothing else.
+
+        TODO: figure out what to do with this function.
+        """
         for i in range(81):
             if i % 9 == 0 and i != 0:
                 print()
@@ -147,6 +181,15 @@ class SudokuSolver:
         print()
 
     def build_possibilities(self) -> None:
+        """
+        Builds the possible solutions for all of the cells. If a cell is solved it continues running
+        until no more are solved during an iteration.
+
+        Uses row, column, and box elimination, and can identify unique solutions for a number in a 
+        box.
+
+        Saves the possibilities as a class attribute.
+        """
         self.possibilities = [[str(i) for i in range(1, 10)] for i in range(0, 81)]
         for i in range(0, 81):
             if self.puzzle_array[i] != ' ':
@@ -172,6 +215,11 @@ class SudokuSolver:
             new_possibilities = self.number_of_possibilites()
 
     def reduce_row(self, row_number) -> None:
+        """
+        Reduces possibilities in a row.
+
+        param row_number: the number of the row to reduce.
+        """
         i = row_number * 9
 
         numbers_to_eliminate = []
@@ -188,7 +236,7 @@ class SudokuSolver:
                     self.possibilities[i].pop(self.possibilities[i].index(number))
                 i = i + 1
 
-    def reduce_column(self, column_number):
+    def reduce_column(self, column_number) -> None:
         i = column_number
 
         numbers_to_eliminate = []
@@ -206,6 +254,13 @@ class SudokuSolver:
                 i = i + 9
 
     def get_box_start_index(self, box_number) -> int:
+        """
+        Get the index of the first cell in a box based on box number.
+
+        param box_number: the number of box to the index for.
+
+        Returns: int. The index of the upper left cell in the box.
+        """
         if box_number == 0:
             return 0
         elif box_number == 1:
@@ -226,6 +281,13 @@ class SudokuSolver:
             return 60
 
     def reduce_box(self, box_number) -> None:
+        """
+        Reduces the possibilities in a box based on given or solved cells in the box.
+
+        param int box_number: the box number to be reduced.
+
+        Returns: None.
+        """
         i = self.get_box_start_index(box_number)
         numbers_to_eliminate = []
 
@@ -298,23 +360,31 @@ class SudokuSolver:
                 i = i + 7
 
     def number_of_possibilites(self) -> int:
+        """
+        Count the number of possibilities remaining in the puzzle.
+
+        Returns: int.
+        """
         possibilities = 0
 
         for i in range(0, 81):
             possibilities = possibilities + len(self.possibilities[i])
         return possibilities
 
-    def get_possibilities(self) -> string:
-        possibilities = ''
-        for possibility in self.possibilities:
-            if len(possibility) == 1:
-                possibilities = possibilities + possibility[0]
-            else:
-                possibilities = possibilities + ' '
+    def get_possibilities(self) -> list:
+        """
+        Get the remaining possibilities in a puzzle.
+
+        Returns: list (of lists). 
+        """
         return self.possibilities
-        return possibilities
 
     def get_reduced_puzzle(self) -> string:  # TODO: expand testing for this
+        """
+        Get the string encoding of the puzzle, with any solved cells, as a string.
+
+        Returns: string.
+        """
         reduced_puzzle = ''
         for possibility in self.possibilities:
             if len(possibility) == 1:
