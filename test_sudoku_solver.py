@@ -3,12 +3,27 @@ import sudoku_solver
 from pathlib import Path
 
 
-def test_SudokuSolver():
+def test_SudokuSolver_1():
     puzzle_string = '******************************************************************************************'
     test_puzzle = sudoku_solver.SudokuSolver(puzzle_string)
     test_array = [' ' for i in range(0, 81)]
     assert test_puzzle.puzzle_array == test_array
 
+def test_SudokuSolver_2():
+    puzzle_string = f'''123456789\n\r
+*********'''
+    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string)
+    test_array = [' ' for i in range(0,81)]
+    test_array[0] = '1'
+    test_array[1] = '2'
+    test_array[2] = '3'
+    test_array[3] = '4'
+    test_array[4] = '5'
+    test_array[5] = '6'
+    test_array[6] = '7'
+    test_array[7] = '8'
+    test_array[8] = '9'
+    assert test_puzzle.puzzle_array == test_array
 
 def test_str_1():
     puzzle_string = '******************************************************************************************'
@@ -169,7 +184,8 @@ def test_check_valid_solution():
 
 
 if __name__ == '__main__':
-    test_SudokuSolver()
+    test_SudokuSolver_1()
+    test_SudokuSolver_2()
     test_str_1()
     test_str_2()
     test_str_3()
