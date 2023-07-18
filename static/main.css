@@ -32,6 +32,7 @@ td.small
     border-collapse: collapse;
     font-size: small;
     margin: 0%;
+    white-space: pre;
 }
 
 td 
