@@ -392,7 +392,40 @@ class SudokuSolver:
             else:
                 reduced_puzzle = reduced_puzzle + '.'
         return reduced_puzzle
+    
+    def get_possibilities_for_web(self) -> list:
+        """
+        Get the string encodings of the reduced puzzle. Returns a list of strings.
+        For cells that have multiple possibilities still, it will format them so that
+        the preforatting checker will leave them alone and they'll be readable.
 
+        Returns: list (of strings).
+        """
+        def build_hints_string(remaining_hints) -> str:
+            hint_string = ''
+            index = 1
+            for letter in remaining_hints:
+                while int(letter) != index:
+                    hint_string = hint_string + ' '
+                    if index % 3 == 0:
+                        hint_string = hint_string + '\n'
+                    index += 1
+                hint_string = hint_string + letter
+                if index % 3 ==0:
+                    hint_string = hint_string + '\n'
+                index = index+1
+                
+            return hint_string
+        
+        formatted_list = []
+
+        for cell in self.possibilities:
+            if len(cell) == 1:
+                formatted_list.append(cell)
+            else:
+                formatted_list.append( build_hints_string(cell) )
+
+        return formatted_list
 
 # fmt: off
 

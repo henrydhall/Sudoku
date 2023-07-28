@@ -33,8 +33,7 @@ def solve_helper():
     form = SudokuForm()
     if form.validate_on_submit():
         my_puzzle = sudoku_solver.SudokuSolver(form.sudoku_puzzle.data)
-        my_puzzle.build_possibilities()
-        puzzle_solution = my_puzzle.get_possibilities() # TODO: make new function to make possibilities pretty
+        puzzle_solution = my_puzzle.get_possibilities_for_web() # TODO: make new function to make possibilities pretty
         return render_template('index.html', numbers=puzzle_solution)
     name = None
     numbers = [i for i in range(0, 81)]
