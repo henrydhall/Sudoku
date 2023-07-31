@@ -6,6 +6,7 @@ table
     border: 3px solid black;
     text-align: center;
     table-layout: fixed;
+    empty-cells: show;
 }
 
 th

@@ -1,5 +1,7 @@
 import string
 
+BLANK_PUZZLE = [' \n ' for i in range(0,81)]
+
 """
 sudoku_solver.SudokuSolver
 

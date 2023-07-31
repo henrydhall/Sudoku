@@ -22,9 +22,11 @@ class SudokuForm(FlaskForm):
 @app.route('/')
 def index():
     name = None
-    numbers = []
-    numbers = ['1' for i in range(0, 81)]
-    numbers[0] = '123\n456\n789'
+    numbers = sudoku_solver.BLANK_PUZZLE
+    numbers[38] = '1'
+    numbers[51] = '2'
+    numbers[66] = '8'
+    numbers[80] = '9'
     return render_template('index.html', numbers=numbers)
 
 
