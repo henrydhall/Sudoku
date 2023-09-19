@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+
+{% block title %}Sudoku{% endblock %}
+
+{% block page_content %}
+
+<table>
+    <tbody>
+        {% for i in range(0,9) %}
+            <tr>
+                {% for j in range(0,9) %}
+                    {% if numbers[ i*9 + j ]|length != 1 %} 
+                        <td class="small">{{ numbers[ i*9 + j ] }}</td> 
+                    {% endif %}
+                    {% if numbers[ i*9 + j ]|length == 1 %} 
+                        <td class="regular">{{ numbers[ i*9 + j ][0] }}</td> 
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+
+<h4>Reduced Puzzle</h4>
+<p>{{ reduced_puzzle }}</p>
+
+<br><br>
+
+{% endblock %}
