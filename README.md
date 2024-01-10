@@ -9,6 +9,4 @@ Experimenting with solving and generating Sudoku puzzles with Python.
 * Check if a solution is valid. We can check, just how we handle that.
 * Use solution checking to use contradiction to find solutions at dead ends.
 * Make form prettier.
-* Update todo's
-* Try \r instead of \n in webapp.
-* Give different default page.
+* Make bottom margin bigger.

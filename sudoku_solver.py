@@ -399,7 +399,7 @@ class SudokuSolver:
         """
         Get the string encodings of the reduced puzzle. Returns a list of strings.
         For cells that have multiple possibilities still, it will format them so that
-        the preforatting checker will leave them alone and they'll be readable.
+        the preformatting checker will leave them alone and they'll be readable.
 
         Returns: list (of strings).
         """
