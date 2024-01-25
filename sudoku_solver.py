@@ -4,10 +4,11 @@ BLANK_PUZZLE = ['\n\n\n' for i in range(0,81)]
 
 """
 sudoku_solver.SudokuSolver
+    This class is the simplest object to help solve sudoku puzzles.
 
-This module provides a SudokuSolver object to help solve sudoku puzzles.
+sudoku_solver.ContradictionSolver
+    This class uses contradictions to eliminate possibilities and solve sudoku puzzles.
 """
-
 
 class SudokuSolver:
     """
@@ -428,45 +429,14 @@ class SudokuSolver:
                 formatted_list.append( build_hints_string(cell) )
 
         return formatted_list
+    
+class ContradictionSolver:
+    """
+    ContradicionSolver object
 
-# fmt: off
-
-if __name__ == '__main__':
-    puzzle_1 = '**14*28**\
-**41*57**\
-5*******3\
-71*5***82\
-4*******9\
-32***9*74\
-1*******7\
-**38*79**\
-**72614**'
-    #print(puzzle)
-    #my_puz = SudokuSolver(puzzle_1)
-    #print( my_puz )
-    #my_puz.build_possibilities()
-    #my_puz.print_possibilities()
-    #print( my_puz )
-
-    puzzle_2 = '*******12\
-*******_3\
-*******45\
-******6**\
-*********\
-*********\
-*********\
-*********\
-*********'
-    #puz_2 = SudokuSolver(puzzle_2)
-    #puz_2.build_possibilities()
-    #puz_2.print_possibilities()
-    #print( puz_2.get_possibilities() )
-    puzzle_3 = '1234567899********8*7******7*49*****6'
-    puzzle_3 = SudokuSolver(puzzle_3)
-    print(puzzle_3)
-    my_sudoku = SudokuSolver('123456789................1')
-    puzzle_4 = '984.31.7261...7...257..98..3...6..1....37.92...9..5....3...6....45.18.961967..28.'
-    puzzle_4 = SudokuSolver(puzzle_4)
-    #print(puzzle_4.get_reduced_puzzle())
-
-# fmt: on
+    Uses contradictions to find solutions to sudoku puzzles.
+    """
+    def __init__(self) -> None:
+        pass
+    # TODO: use keyword arguments to build from either puzzle string, or SudokuSolver object
+    
