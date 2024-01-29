@@ -1,14 +1,16 @@
-import string
-
-BLANK_PUZZLE = ['\n\n\n' for i in range(0,81)]
-
 """
+This module has some classes and functionality for solving sudokus.
+
 sudoku_solver.SudokuSolver
     This class is the simplest object to help solve sudoku puzzles.
 
-sudoku_solver.ContradictionSolver
-    This class uses contradictions to eliminate possibilities and solve sudoku puzzles.
+sudoku_solver.BactrackSolver
+    This class uses backtracking to eliminate possibilities and solve sudoku puzzles.
 """
+
+import string
+
+BLANK_PUZZLE = ['\n\n\n' for i in range(0,81)]
 
 class SudokuSolver:
     """
@@ -430,13 +432,25 @@ class SudokuSolver:
 
         return formatted_list
     
-class ContradictionSolver:
+class BactrackSolver:
     """
-    ContradicionSolver object
+    BacktrackSolver object
 
-    Uses contradictions to find solutions to sudoku puzzles.
+    Uses modified backtracking algorithm to find solutions to sudoku puzzles.
     """
-    def __init__(self) -> None:
-        pass
+    def __init__(self, **kwargs) -> None:
+        """
+        Creates Backtrack solver object.
+
+        Parameters
+            **kwargs
+                Accepts 'puzzle = <puzzle string>' or 'solver = <SudokuSolver>
+        """
+        if 'puzzle' in kwargs:
+            print('using from puzzle')
+        elif 'solver' in kwargs:
+            print('using from solver')
+        else:
+            raise KeyError('Use \'puzzle = <puzzle>\' or \'solver = <solver>\'')
     # TODO: use keyword arguments to build from either puzzle string, or SudokuSolver object
     

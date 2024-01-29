@@ -10,3 +10,4 @@ Experimenting with solving and generating Sudoku puzzles with Python.
 * Use solution checking to use contradiction to find solutions at dead ends.
 * Make form prettier.
 * Make bottom margin bigger.
+* Redo docstrings to match reST.
