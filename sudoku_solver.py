@@ -53,6 +53,16 @@ class SudokuSolver:
         # if self.check_valid_solution() is False:
         #    pass #TODO: come up with error handling...see if we can make this not so slow
 
+    def copy(self):
+        """
+        TODO: docstring, type hint
+        """
+        copy_solver = SudokuSolver
+        copy_solver.puzzle_string = self.puzzle_string
+        copy_solver.puzzle_array  = self.puzzle_array
+        copy_solver.possibilities = self.get_possibilities()
+        return copy_solver
+
     def check_valid_puzzle(self) -> None:
         """
         Checks that the puzzle created is valid. Raises ValueError if invalid.
@@ -447,8 +457,16 @@ class BactrackSolver:
                 Accepts 'puzzle = <puzzle string>' or 'solver = <SudokuSolver>
         """
         if 'puzzle' in kwargs:
+            self.puzzle_string = kwargs['puzzle']
+            self.solver = SudokuSolver(self.puzzle_string)
+            self.possibilities = self.solver.possibilities
             print('using from puzzle')
         elif 'solver' in kwargs:
+            if type( kwargs['solver'] ) is not SudokuSolver:
+                raise TypeError('kwargs[\'solver\'] is not SudokuSolver')
+            self.solver = kwargs['solver']
+            self.puzzle = self.solver.puzzle_string
+            self.possibilities = self.solver.possibilities
             print('using from solver')
         else:
             raise KeyError('Use \'puzzle = <puzzle>\' or \'solver = <solver>\'')
