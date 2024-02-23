@@ -5,14 +5,14 @@ from pathlib import Path
 
 def test_SudokuSolver_1():
     puzzle_string = '******************************************************************************************'
-    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string)
+    test_puzzle = sudoku_solver.SudokuSolver( puzzle_string = puzzle_string)
     test_array = [' ' for i in range(0, 81)]
     assert test_puzzle.puzzle_array == test_array
 
 def test_SudokuSolver_2():
     puzzle_string = f'''123456789\n\r
 *********'''
-    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string)
+    test_puzzle = sudoku_solver.SudokuSolver( puzzle_string = puzzle_string)
     test_array = [' ' for i in range(0,81)]
     test_array[0] = '1'
     test_array[1] = '2'
@@ -27,7 +27,7 @@ def test_SudokuSolver_2():
 
 def test_str_1():
     puzzle_string = '******************************************************************************************'
-    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string)
+    test_puzzle = sudoku_solver.SudokuSolver( puzzle_string = puzzle_string)
     test_string = f''' --- --- ---
 |   |   |   |
 |   |   |   |
@@ -46,7 +46,7 @@ def test_str_1():
 
 def test_str_2():
     puzzle_string = '1*****************************************************************************************'
-    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string)
+    test_puzzle = sudoku_solver.SudokuSolver( puzzle_string = puzzle_string)
     test_string = f''' --- --- ---
 |1  |   |   |
 |   |   |   |
@@ -65,7 +65,7 @@ def test_str_2():
 
 def test_str_3():
     puzzle_string = '1****************************\n*************************************************************'
-    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string)
+    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string = puzzle_string)
     test_string = f''' --- --- ---
 |1  |   |   |
 |   |   |   |
@@ -87,7 +87,7 @@ def test_str_3():
 
 def test_build_possibilities():
     test_puzzle_string = '12345678***********************************************************************9*'
-    test_puzzle = sudoku_solver.SudokuSolver(test_puzzle_string)
+    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string = test_puzzle_string)
     assert test_puzzle.possibilities[8] == ['9']
     assert test_puzzle.possibilities[9] == ['4', '5', '6', '7', '8', '9']
     assert test_puzzle.possibilities[17] == ['1', '2', '3', '4', '5', '6']
@@ -98,19 +98,19 @@ def test_build_possibilities():
 
 def test_find_unique_possibilities():
     test_puzzle_string_1 = '12*******3********45*********6************************************************************'
-    test_puzzle_1 = sudoku_solver.SudokuSolver(test_puzzle_string_1)
+    test_puzzle_1 = sudoku_solver.SudokuSolver(puzzle_string = test_puzzle_string_1)
     assert test_puzzle_1.possibilities[10] == ['6']
     test_puzzle_string_2 = '*12*********6*************6******************************************************'
-    test_puzzle_2 = sudoku_solver.SudokuSolver(test_puzzle_string_2)
+    test_puzzle_2 = sudoku_solver.SudokuSolver(puzzle_string = test_puzzle_string_2)
     assert test_puzzle_2.possibilities[0] == ['6']
     test_puzzle_string_3 = '12**********6*************6******************************************************'
-    test_puzzle_3 = sudoku_solver.SudokuSolver(test_puzzle_string_3)
+    test_puzzle_3 = sudoku_solver.SudokuSolver(puzzle_string = test_puzzle_string_3)
     assert test_puzzle_3.possibilities[2] == ['6']
 
 
 def test_print_possibilities():
     test_puzzle_string_1 = '12*******3********45*********6************************************************************'
-    test_puzzle_1 = sudoku_solver.SudokuSolver(test_puzzle_string_1)
+    test_puzzle_1 = sudoku_solver.SudokuSolver(puzzle_string = test_puzzle_string_1)
     test_puzzle_1.print_possibilities()
     # TODO: figure out how to test the print. I say don't do it...
 
@@ -148,7 +148,7 @@ def test_check_valid_puzzle():
     errors = []
     for puzzle in test_puzzle_strings:
         try:
-            new_puzzle = sudoku_solver.SudokuSolver(puzzle)
+            new_puzzle = sudoku_solver.SudokuSolver(puzzle_string = puzzle)
             errors.append(puzzle)
         except ValueError:
             errors.append('Error')
@@ -158,14 +158,14 @@ def test_check_valid_puzzle():
 
 def test_get_reduced_puzzle():
     test_string = '12345678.'
-    test_puzzle = sudoku_solver.SudokuSolver(test_string)
+    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string = test_string)
     assert (
         test_puzzle.get_reduced_puzzle()
         == '123456789........................................................................'
     )
 
     test_string = '.2345678.9'
-    test_puzzle = sudoku_solver.SudokuSolver(test_string)
+    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string = test_string)
     assert (
         test_puzzle.get_reduced_puzzle()
         == '1234567899.......................................................................'
@@ -175,11 +175,11 @@ def test_get_reduced_puzzle():
 
 def test_check_valid_solution():
     test_string = '.234567891'
-    test_puzzle = sudoku_solver.SudokuSolver(test_string)
+    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string = test_string)
     assert test_puzzle.check_valid_solution() is False
 
     test_string = '.23456789'
-    test_puzzle = sudoku_solver.SudokuSolver(test_string)
+    test_puzzle = sudoku_solver.SudokuSolver(puzzle_string = test_string)
     assert test_puzzle.check_valid_solution() is True
 
 

@@ -34,7 +34,7 @@ def index():
 def solve_helper():
     form = SudokuForm()
     if form.validate_on_submit():
-        my_puzzle = sudoku_solver.SudokuSolver(form.sudoku_puzzle.data)
+        my_puzzle = sudoku_solver.SudokuSolver(puzzle_string = form.sudoku_puzzle.data)
         puzzle_solution = my_puzzle.get_possibilities_for_web() # TODO: make new function to make possibilities pretty
         reduced_puzzle = my_puzzle.get_reduced_puzzle()
         return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle=reduced_puzzle)

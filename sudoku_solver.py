@@ -25,39 +25,45 @@ class SudokuSolver:
     '123...456........................................................................'
     """
 
-    def __init__(self, sudoku_string_):
+    def __init__(self, **kwargs):
         """
         Creates SudokuSolver class.
 
-        param sudoku_string_: puzzle encoding for new puzzle.
+        param **kwargs: 
+            puzzle_string: puzzle encoding for new puzzle (optional).
 
         returns SudokuSolver object.
         """
-        puzzle_array = []
-        processor = 0
-        while processor < len(sudoku_string_) and len(puzzle_array) < 81:
-            if sudoku_string_[processor].isnumeric():
-                puzzle_array.append(sudoku_string_[processor])
-            elif sudoku_string_[processor] == '\n' or sudoku_string_[processor] == '\r':
-                # This was tricky. HTML form newlines aren't \n, they are \r
-                pass
-            else:
+        if 'puzzle_string' in kwargs: 
+            puzzle_string = kwargs['puzzle_string']
+            puzzle_array = []
+            processor = 0
+            while processor < len(puzzle_string) and len(puzzle_array) < 81:
+                if puzzle_string[processor].isnumeric():
+                    puzzle_array.append(puzzle_string[processor])
+                elif puzzle_string[processor] == '\n' or puzzle_string[processor] == '\r':
+                    # This was tricky. HTML form newlines aren't \n, they are \r
+                    pass
+                else:
+                    puzzle_array.append(' ')
+                processor = processor + 1
+            while len(puzzle_array) < 81:
                 puzzle_array.append(' ')
-            processor = processor + 1
-        while len(puzzle_array) < 81:
-            puzzle_array.append(' ')
-        self.puzzle_array = puzzle_array
-        self.puzzle_string = sudoku_string_
-        self.check_valid_puzzle()
-        self.build_possibilities()
+            self.puzzle_array = puzzle_array
+            self.puzzle_string = puzzle_string
+            self.check_valid_puzzle()
+            self.build_possibilities()
+        else:
+            pass
         # if self.check_valid_solution() is False:
         #    pass #TODO: come up with error handling...see if we can make this not so slow
 
     def copy(self):
         """
-        TODO: docstring, type hint
+        TODO: docstring, type hint, make it actually efficient in returning a copy.
+            To do that you'll have to change the __init__ so that it can accept another puzzle basically
         """
-        copy_solver = SudokuSolver
+        copy_solver = SudokuSolver()
         copy_solver.puzzle_string = self.puzzle_string
         copy_solver.puzzle_array  = self.puzzle_array
         copy_solver.possibilities = self.get_possibilities()
@@ -442,7 +448,7 @@ class SudokuSolver:
 
         return formatted_list
     
-class BactrackSolver:
+class BacktrackSolver:
     """
     BacktrackSolver object
 
@@ -454,11 +460,11 @@ class BactrackSolver:
 
         Parameters
             **kwargs
-                Accepts 'puzzle = <puzzle string>' or 'solver = <SudokuSolver>
+                Accepts 'puzzle = <puzzle string>' or 'solver = <SudokuSolver>'
         """
         if 'puzzle' in kwargs:
             self.puzzle_string = kwargs['puzzle']
-            self.solver = SudokuSolver(self.puzzle_string)
+            self.solver = SudokuSolver( puzzle_string = self.puzzle_string)
             self.possibilities = self.solver.possibilities
             print('using from puzzle')
         elif 'solver' in kwargs:
@@ -470,5 +476,14 @@ class BactrackSolver:
             print('using from solver')
         else:
             raise KeyError('Use \'puzzle = <puzzle>\' or \'solver = <solver>\'')
-    # TODO: use keyword arguments to build from either puzzle string, or SudokuSolver object
-    
+        
+    def solve_by_backtrack(self):
+        root_solver = self.solver.copy()
+        print(self.solver.number_of_possibilites())
+        print(root_solver.number_of_possibilites())
+
+        while root_solver.number_of_possibilites() > 81:
+            i = 0
+            if len(root_solver.possibilities[i] ) > 1:
+                print(root_solver.possibilities[i])
+            break # TODO: need to actually do this
