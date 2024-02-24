@@ -62,6 +62,7 @@ class SudokuSolver:
         """
         TODO: docstring, type hint, make it actually efficient in returning a copy.
             To do that you'll have to change the __init__ so that it can accept another puzzle basically
+        TODO: test
         """
         copy_solver = SudokuSolver()
         copy_solver.puzzle_string = self.puzzle_string
@@ -479,11 +480,18 @@ class BacktrackSolver:
         
     def solve_by_backtrack(self):
         root_solver = self.solver.copy()
-        print(self.solver.number_of_possibilites())
-        print(root_solver.number_of_possibilites())
-
-        while root_solver.number_of_possibilites() > 81:
-            i = 0
-            if len(root_solver.possibilities[i] ) > 1:
+        second_step = self.solver.copy()
+        i = 0
+        while i < 81:
+            if len(root_solver.possibilities[i]) > 1:
                 print(root_solver.possibilities[i])
-            break # TODO: need to actually do this
+            i += 1
+        '''
+        Start at 0
+        If it's solved move to the next square
+        If there are multiple possibilities pick one
+        Put (index, guess) in stack
+        Look for direct contradictions
+        If there is a direct contradiction pop (index, guess), put it back
+        Else backtrack one step
+        '''
