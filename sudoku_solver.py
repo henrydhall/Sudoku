@@ -479,19 +479,52 @@ class BacktrackSolver:
             raise KeyError('Use \'puzzle = <puzzle>\' or \'solver = <solver>\'')
         
     def solve_by_backtrack(self):
+        '''
+        TODO: docstring
+        '''
         root_solver = self.solver.copy()
-        second_step = self.solver.copy()
         i = 0
+        guesses = []
         while i < 81:
             if len(root_solver.possibilities[i]) > 1:
-                print(root_solver.possibilities[i])
+                reduced_string = root_solver.get_reduced_puzzle()
+                guesses.append((i, root_solver.possibilities[i][0]))
+                self.row_contradiction( guesses[-1][0], guesses[-1][1], reduced_string )
             i += 1
+
         '''
         Start at 0
         If it's solved move to the next square
         If there are multiple possibilities pick one
         Put (index, guess) in stack
         Look for direct contradictions
-        If there is a direct contradiction pop (index, guess), put it back
-        Else backtrack one step
+        If there is a direct contradiction pop (index, guess)
+        Check for more possibilities at index
+        If there's more possibilities try them, else keep moving back
+        If stack is empty pop the last guess from the possibilities, get new reduced puzzle
         '''
+
+    def build_backtrack_reduced_string(self, base_string, guesses):
+        '''
+        TODO: docstring
+        '''
+        new_string = []
+        for char in base_string:
+            new_string.append(char)
+
+        for guess in guesses:
+            new_string[ guess[0] ] = guess[1]
+
+        # TODO: get new_string put together as a string and return it
+
+    def find_contradiction(self, cell, guess, reduced_puzzle):
+        '''
+        TODO: docstring
+        '''
+        pass
+
+    def row_contradiction(self, cell, guess):
+        '''
+        TODO: docstring
+        '''
+        pass
