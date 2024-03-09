@@ -58,7 +58,7 @@ class SudokuSolver:
         # if self.check_valid_solution() is False:
         #    pass #TODO: come up with error handling...see if we can make this not so slow
 
-    def copy(self):
+    def copy(self) -> 'SudokuSolver':
         """
         TODO: docstring, type hint, make it actually efficient in returning a copy.
             To do that you'll have to change the __init__ so that it can accept another puzzle basically
@@ -90,7 +90,7 @@ class SudokuSolver:
         """
         try:
             # Uses the reduced puzzle to create a new puzzle. Returns false if an error is raised.
-            temp_puzzle = SudokuSolver(self.get_reduced_puzzle())
+            temp_puzzle = SudokuSolver( puzzle_string = self.get_reduced_puzzle())
             return True
         except:
             return False
@@ -159,8 +159,11 @@ class SudokuSolver:
     def get_cell_box_number(self, cell_number):
         raise NotImplementedError('TODO: get_cell_box_number')
 
-    def get_cell_row_number(self, cell_number):
-        raise NotImplementedError('TODO: get_cell_row_number')
+    def get_cell_row_number(self, cell_number) -> int:
+        """
+        TODO: docstring
+        """
+        return cell_number // 9
 
     def get_cell_column_number(self, column_number):
         raise NotImplementedError('TODO: get_cell_column_number')
@@ -467,14 +470,12 @@ class BacktrackSolver:
             self.puzzle_string = kwargs['puzzle']
             self.solver = SudokuSolver( puzzle_string = self.puzzle_string)
             self.possibilities = self.solver.possibilities
-            print('using from puzzle')
         elif 'solver' in kwargs:
             if type( kwargs['solver'] ) is not SudokuSolver:
                 raise TypeError('kwargs[\'solver\'] is not SudokuSolver')
             self.solver = kwargs['solver']
             self.puzzle = self.solver.puzzle_string
             self.possibilities = self.solver.possibilities
-            print('using from solver')
         else:
             raise KeyError('Use \'puzzle = <puzzle>\' or \'solver = <solver>\'')
         
@@ -482,14 +483,22 @@ class BacktrackSolver:
         '''
         TODO: docstring
         '''
+
+        # Make a root copy
         root_solver = self.solver.copy()
+        step_solver = self.solver.copy()
+        # Start at 0
         i = 0
-        guesses = []
+        guesses = []        # Stack of the index and a guess
         while i < 81:
-            if len(root_solver.possibilities[i]) > 1:
-                reduced_string = root_solver.get_reduced_puzzle()
-                guesses.append((i, root_solver.possibilities[i][0]))
-                self.row_contradiction( guesses[-1][0], guesses[-1][1], reduced_string )
+            print(step_solver.possibilities[i])
+
+            if len(step_solver.possibilities[i]) > 1:   # Find an unsolved cell.
+                guesses.append((i, step_solver.possibilities[i][0]))        # Add the new guess
+                step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
+                good_guess = step_solver.check_valid_solution() # See if it's a valid solution
+                if not good_guess:
+                    raise NotImplementedError('TODO: continue backtracking algorithm')
             i += 1
 
         '''
@@ -498,32 +507,20 @@ class BacktrackSolver:
         If there are multiple possibilities pick one
         Put (index, guess) in stack
         Look for direct contradictions
-        If there is a direct contradiction pop (index, guess)
+        If there is a direct contradiction pop (index, guess), restore old possibilities
         Check for more possibilities at index
         If there's more possibilities try them, else keep moving back
         If stack is empty pop the last guess from the possibilities, get new reduced puzzle
         '''
 
-    def build_backtrack_reduced_string(self, base_string, guesses):
+    def find_contradiction(self, cell, guess, reduced_puzzle) -> bool:
         '''
         TODO: docstring
         '''
-        new_string = []
-        for char in base_string:
-            new_string.append(char)
+        bad_row = self.row_contradiction(cell, guess, reduced_puzzle)
+        return False
 
-        for guess in guesses:
-            new_string[ guess[0] ] = guess[1]
-
-        # TODO: get new_string put together as a string and return it
-
-    def find_contradiction(self, cell, guess, reduced_puzzle):
-        '''
-        TODO: docstring
-        '''
-        pass
-
-    def row_contradiction(self, cell, guess):
+    def row_contradiction(self, cell, guess, reduced_puzzle) -> bool:
         '''
         TODO: docstring
         '''
