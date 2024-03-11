@@ -492,25 +492,43 @@ class BacktrackSolver:
         guesses = []        # Stack of the index and a guess
         while i < 81:
             print(step_solver.possibilities[i])
-
-            if len(step_solver.possibilities[i]) > 1:   # Find an unsolved cell.
+            if len(step_solver.possibilities[i]) == 1: # if the cell is solved, skip it
+                i += 1
+            else: # Find an unsolved cell.
                 guesses.append((i, step_solver.possibilities[i][0]))        # Add the new guess
                 step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
                 good_guess = step_solver.check_valid_solution() # See if it's a valid solution
-                if not good_guess:
+                if not good_guess:              # If it's not valid
+                    if len( guesses ) > 0:      # check if the stack has items
+                        correction = guesses.pop(-1)    # pop from stack
+                        i, wrong_guess = correction[0], correction[1]
+                        step_solver.possibilities[i].remove(wrong_guess) # remove wrong guess
+                        # TODO: fix below here. Need to correct algorithm here based on work below
+                        # try another possibility
+                        # if there's not another possility 
+                        # Restore possibiities
+                        # pop another from stack
+                    else: # if stack is empty
+                        step_solver.possibilities[i].remove(wrong_guess) 
                     raise NotImplementedError('TODO: continue backtracking algorithm')
-            i += 1
-
-        '''
-        Start at 0
-        If it's solved move to the next square
-        If there are multiple possibilities pick one
-        Put (index, guess) in stack
-        Look for direct contradictions
-        If there is a direct contradiction pop (index, guess), restore old possibilities
-        Check for more possibilities at index
-        If there's more possibilities try them, else keep moving back
-        If stack is empty pop the last guess from the possibilities, get new reduced puzzle
+        ''' Algorithm is at its best here
+        Start at index = 0
+        while index < 81:
+            if it's solved, move to the next square
+                index += 1
+            else: there are multiple possibilities pick one
+                Put (index, guess) in stack
+                Look for direct contradictions
+                If there is a direct contradiction
+                    If stack is empty pop the last guess from the possibilities, get new reduced puzzle
+                    Else:
+                        index, bad guess = pop (index, guess)
+                        remove bad guess
+                Check for more possibilities at index
+                    If there's not any:
+                        restore old possibilities
+                If there's more possibilities try them, else keep moving back
+        
         '''
 
     def find_contradiction(self, cell, guess, reduced_puzzle) -> bool:
