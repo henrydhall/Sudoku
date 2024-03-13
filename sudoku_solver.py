@@ -9,6 +9,7 @@ sudoku_solver.BactrackSolver
 """
 
 import string
+import copy
 
 BLANK_PUZZLE = ['\n\n\n' for i in range(0,81)]
 
@@ -58,16 +59,16 @@ class SudokuSolver:
         # if self.check_valid_solution() is False:
         #    pass #TODO: come up with error handling...see if we can make this not so slow
 
-    def copy(self) -> 'SudokuSolver':
+    def copy_solver(self) -> 'SudokuSolver':
         """
         TODO: docstring, type hint, make it actually efficient in returning a copy.
             To do that you'll have to change the __init__ so that it can accept another puzzle basically
         TODO: test
         """
         copy_solver = SudokuSolver()
-        copy_solver.puzzle_string = self.puzzle_string
-        copy_solver.puzzle_array  = self.puzzle_array
-        copy_solver.possibilities = self.get_possibilities()
+        copy_solver.puzzle_string = copy.deepcopy( self.puzzle_string )
+        copy_solver.puzzle_array  = copy.deepcopy( self.puzzle_array )
+        copy_solver.possibilities = copy.deepcopy( self.get_possibilities() )
         return copy_solver
 
     def check_valid_puzzle(self) -> None:
@@ -485,8 +486,8 @@ class BacktrackSolver:
         '''
 
         # Make a root copy
-        root_solver = self.solver.copy()
-        step_solver = self.solver.copy()
+        root_solver = self.solver.copy_solver()
+        step_solver = self.solver.copy_solver()
         # Start at 0
         i = 0
         guesses = []        # Stack of the index and a guess
@@ -495,22 +496,22 @@ class BacktrackSolver:
             if len(step_solver.possibilities[i]) == 1: # if the cell is solved, skip it
                 i += 1
             else: # Find an unsolved cell.
+                print('i: ', i)
                 guesses.append((i, step_solver.possibilities[i][0]))        # Add the new guess
                 step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
                 good_guess = step_solver.check_valid_solution() # See if it's a valid solution
                 if not good_guess:              # If it's not valid
-                    if len( guesses ) > 0:      # check if the stack has items
-                        correction = guesses.pop(-1)    # pop from stack
-                        i, wrong_guess = correction[0], correction[1]
-                        step_solver.possibilities[i].remove(wrong_guess) # remove wrong guess
-                        # TODO: fix below here. Need to correct algorithm here based on work below
-                        # try another possibility
-                        # if there's not another possility 
-                        # Restore possibiities
-                        # pop another from stack
-                    else: # if stack is empty
-                        step_solver.possibilities[i].remove(wrong_guess) 
-                    raise NotImplementedError('TODO: continue backtracking algorithm')
+                    step_solver.possibilities[i] = root_solver.possibilities[i]
+                    correction = guesses.pop(-1)    # pop from stack
+                    prev_step, wrong_guess = correction[0], correction[1] 
+                    step_solver.possibilities[i].remove(wrong_guess) # remove wrong guess
+                    i = prev_step
+                    # TODO: fix below here. Need to correct algorithm here based on work below
+                    # try another possibility
+                    # if there's not another possility 
+                    # Restore possibiities
+                    # pop another from stack
+                    #raise NotImplementedError('TODO: continue backtracking algorithm')
         ''' Algorithm is at its best here
         Start at index = 0
         while index < 81:
