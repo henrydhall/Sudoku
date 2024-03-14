@@ -492,26 +492,32 @@ class BacktrackSolver:
         i = 0
         guesses = []        # Stack of the index and a guess
         while i < 81:
+            if i == 19:
+                break
             print(step_solver.possibilities[i])
             if len(step_solver.possibilities[i]) == 1: # if the cell is solved, skip it
                 i += 1
             else: # Find an unsolved cell.
-                print('i: ', i)
                 guesses.append((i, step_solver.possibilities[i][0]))        # Add the new guess
                 step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
                 good_guess = step_solver.check_valid_solution() # See if it's a valid solution
                 if not good_guess:              # If it's not valid
-                    step_solver.possibilities[i] = root_solver.possibilities[i]
-                    correction = guesses.pop(-1)    # pop from stack
-                    prev_step, wrong_guess = correction[0], correction[1] 
-                    step_solver.possibilities[i].remove(wrong_guess) # remove wrong guess
-                    i = prev_step
-                    # TODO: fix below here. Need to correct algorithm here based on work below
-                    # try another possibility
-                    # if there's not another possility 
-                    # Restore possibiities
-                    # pop another from stack
-                    #raise NotImplementedError('TODO: continue backtracking algorithm')
+                    if len( guesses ) > 0:      # check if the stack has items
+                        step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
+                        correction = guesses.pop(-1)    # pop from stack
+                        i, wrong_guess = correction[0], correction[1]
+                        step_solver.possibilities[i].remove(wrong_guess) # remove wrong guess
+                        # somewhere in here we need to remove ALL wrong guesses up to that point
+                        while len(step_solver.possibilities[i]) == 0:
+                            step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
+                            correction = guesses.pop(-1)    # pop another from stack
+                            i, wrong_guess = correction[0], correction[1]
+                            step_solver.possibilities[i].remove(wrong_guess)
+                        # try another possibility
+                        # if there's not another possility 
+                        # Restore possibiities
+                        # pop another from stack
+        step_solver.print_possibilities()
         ''' Algorithm is at its best here
         Start at index = 0
         while index < 81:
