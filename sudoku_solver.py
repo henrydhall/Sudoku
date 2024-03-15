@@ -4,7 +4,7 @@ This module has some classes and functionality for solving sudokus.
 sudoku_solver.SudokuSolver
     This class is the simplest object to help solve sudoku puzzles.
 
-sudoku_solver.BactrackSolver
+sudoku_solver.BacktrackSolver
     This class uses backtracking to eliminate possibilities and solve sudoku puzzles.
 """
 
@@ -488,31 +488,44 @@ class BacktrackSolver:
         # Make a root copy
         root_solver = self.solver.copy_solver()
         step_solver = self.solver.copy_solver()
+
         # Start at 0
         i = 0
-        guesses = []        # Stack of the index and a guess
+        guesses = []        # Stack of the guesses and their indices
+
         while i < 81:
+
             if i == 19:
                 break
-            print(step_solver.possibilities[i])
-            if len(step_solver.possibilities[i]) == 1: # if the cell is solved, skip it
+            print(i, step_solver.possibilities[i])
+
+            if len(step_solver.possibilities[i]) == 1:      # if the cell is solved, skip it
                 i += 1
-            else: # Find an unsolved cell.
+            else:                                           # Find an unsolved cell.
                 guesses.append((i, step_solver.possibilities[i][0]))        # Add the new guess
                 step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
-                good_guess = step_solver.check_valid_solution() # See if it's a valid solution
+
+                good_guess = step_solver.check_valid_solution()             # See if it's a valid solution
                 if not good_guess:              # If it's not valid
                     if len( guesses ) > 0:      # check if the stack has items
                         step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
                         correction = guesses.pop(-1)    # pop from stack
                         i, wrong_guess = correction[0], correction[1]
-                        step_solver.possibilities[i].remove(wrong_guess) # remove wrong guess
+                        for possibility in step_solver.possibilities[i]:
+                            if int(possibility) <= int(wrong_guess):
+                                step_solver.possibilities[i].remove(possibility) # remove wrong guesses
+                            else:
+                                break
                         # somewhere in here we need to remove ALL wrong guesses up to that point
                         while len(step_solver.possibilities[i]) == 0:
                             step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
                             correction = guesses.pop(-1)    # pop another from stack
                             i, wrong_guess = correction[0], correction[1]
-                            step_solver.possibilities[i].remove(wrong_guess)
+                            for possibility in step_solver.possibilities[i]:
+                                if int(possibility) <= int(wrong_guess):
+                                    step_solver.possibilities[i].remove(possibility) # remove wrong guesses
+                                else:
+                                    break
                         # try another possibility
                         # if there's not another possility 
                         # Restore possibiities
@@ -527,16 +540,48 @@ class BacktrackSolver:
                 Put (index, guess) in stack
                 Look for direct contradictions
                 If there is a direct contradiction
-                    If stack is empty pop the last guess from the possibilities, get new reduced puzzle
-                    Else:
-                        index, bad guess = pop (index, guess)
-                        remove bad guess
+                    index, bad guess = pop (index, guess)
+                    remove bad guess
                 Check for more possibilities at index
                     If there's not any:
                         restore old possibilities
                 If there's more possibilities try them, else keep moving back
         
         '''
+
+    def solve_by_backtrack_2(self):
+        root_solver = self.solver.copy_solver()
+        step_solver = self.solver.copy_solver()
+
+        i = 0
+        guesses = []
+       
+        while i < 81: 
+            print(step_solver.possibilities[i])
+
+            if len( step_solver.possibilities[i] ) == 1:
+               i += 1
+            else:
+               guesses.append( (i,step_solver.possibilities[i][0]) )
+               step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
+
+               valid_guess = step_solver.check_valid_solution()
+
+               if not valid_guess:
+                   print('not valid')
+                   bad_guess = guesses.pop()
+
+                   step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
+
+                   for possibility in step_solver.possibilities[i]:
+                       if int(possibility) <= int(bad_guess[1]):
+                           step_solver.possibilities[i].remove(possibility)
+
+                   i, invalid_guess = bad_guess[0], bad_guess[1]
+
+                   print('i:', i, 'bad guess:', invalid_guess)
+            
+        step_solver.print_possibilities()
 
     def find_contradiction(self, cell, guess, reduced_puzzle) -> bool:
         '''
