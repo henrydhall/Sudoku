@@ -557,29 +557,42 @@ class BacktrackSolver:
         guesses = []
        
         while i < 81: 
-            print(step_solver.possibilities[i])
+            print( 'i:', i, step_solver.possibilities[i])
 
-            if len( step_solver.possibilities[i] ) == 1:
-               i += 1
+            if (step_solver.possibilities[i]  == root_solver.possibilities[i]
+                and len(step_solver.possibilities[i]) == 1 ):
+                i += 1 # we need to make sure to not skip 9's
+            elif (i,step_solver.possibilities[i][0]) in guesses:
+                i += 1
             else:
-               guesses.append( (i,step_solver.possibilities[i][0]) )
-               step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
+                guesses.append( (i,step_solver.possibilities[i][0]) )
+                step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
 
-               valid_guess = step_solver.check_valid_solution()
+                valid_guess = step_solver.check_valid_solution()
 
-               if not valid_guess:
-                   print('not valid')
-                   bad_guess = guesses.pop()
+                if not valid_guess:
+                    print('not valid')
 
-                   step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
+                    bad_guess = guesses.pop()
 
-                   for possibility in step_solver.possibilities[i]:
-                       if int(possibility) <= int(bad_guess[1]):
-                           step_solver.possibilities[i].remove(possibility)
+                    print('i:', bad_guess[0], 'bad guess:', bad_guess[1])
 
-                   i, invalid_guess = bad_guess[0], bad_guess[1]
+                    step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
 
-                   print('i:', i, 'bad guess:', invalid_guess)
+                    to_remove = []
+                    for possibility in step_solver.possibilities[i]:
+                        if int(possibility) <= int(bad_guess[1]):
+                            to_remove.append(possibility)
+
+                    for item in to_remove:
+                        step_solver.possibilities[i].remove(item)
+
+                    if len( step_solver.possibilities[i] ) == 0:
+                        print('here is a problem')
+                        # TODO: write the logic to backtrack here!
+
+                    i = guesses[-1][0]
+
             
         step_solver.print_possibilities()
 
