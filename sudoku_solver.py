@@ -158,6 +158,7 @@ class SudokuSolver:
         return True
 
     def get_cell_box_number(self, cell_number):
+        # TODO: get this based on row and column number
         raise NotImplementedError('TODO: get_cell_box_number')
 
     def get_cell_row_number(self, cell_number) -> int:
@@ -480,57 +481,6 @@ class BacktrackSolver:
         else:
             raise KeyError('Use \'puzzle = <puzzle>\' or \'solver = <solver>\'')
         
-    def solve_by_backtrack(self):
-        '''
-        TODO: docstring
-        '''
-
-        # Make a root copy
-        root_solver = self.solver.copy_solver()
-        step_solver = self.solver.copy_solver()
-
-        # Start at 0
-        i = 0
-        guesses = []        # Stack of the guesses and their indices
-
-        while i < 81:
-
-            if i == 19:
-                break
-            print(i, step_solver.possibilities[i])
-
-            if len(step_solver.possibilities[i]) == 1:      # if the cell is solved, skip it
-                i += 1
-            else:                                           # Find an unsolved cell.
-                guesses.append((i, step_solver.possibilities[i][0]))        # Add the new guess
-                step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
-
-                good_guess = step_solver.check_valid_solution()             # See if it's a valid solution
-                if not good_guess:              # If it's not valid
-                    if len( guesses ) > 0:      # check if the stack has items
-                        step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
-                        correction = guesses.pop(-1)    # pop from stack
-                        i, wrong_guess = correction[0], correction[1]
-                        for possibility in step_solver.possibilities[i]:
-                            if int(possibility) <= int(wrong_guess):
-                                step_solver.possibilities[i].remove(possibility) # remove wrong guesses
-                            else:
-                                break
-                        # somewhere in here we need to remove ALL wrong guesses up to that point
-                        while len(step_solver.possibilities[i]) == 0:
-                            step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
-                            correction = guesses.pop(-1)    # pop another from stack
-                            i, wrong_guess = correction[0], correction[1]
-                            for possibility in step_solver.possibilities[i]:
-                                if int(possibility) <= int(wrong_guess):
-                                    step_solver.possibilities[i].remove(possibility) # remove wrong guesses
-                                else:
-                                    break
-                        # try another possibility
-                        # if there's not another possility 
-                        # Restore possibiities
-                        # pop another from stack
-        step_solver.print_possibilities()
         ''' Algorithm is at its best here
         Start at index = 0
         while index < 81:
@@ -549,7 +499,10 @@ class BacktrackSolver:
         
         '''
 
-    def solve_by_backtrack_2(self):
+    def solve_by_backtrack(self):
+        """
+        TODO: docstring
+        """
         root_solver = self.solver.copy_solver()
         step_solver = self.solver.copy_solver()
 
@@ -557,7 +510,7 @@ class BacktrackSolver:
         guesses = []
        
         while i < 81: 
-            print( 'i:', i, step_solver.possibilities[i])
+            #print( 'i:', i, step_solver.possibilities[i])
 
             if (step_solver.possibilities[i]  == root_solver.possibilities[i]
                 and len(step_solver.possibilities[i]) == 1 ):
@@ -571,11 +524,7 @@ class BacktrackSolver:
                 valid_guess = step_solver.check_valid_solution()
 
                 if not valid_guess:
-                    print('not valid')
-
                     bad_guess = guesses.pop()
-
-                    print('i:', bad_guess[0], 'bad guess:', bad_guess[1])
 
                     step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
 
@@ -586,12 +535,27 @@ class BacktrackSolver:
 
                     for item in to_remove:
                         step_solver.possibilities[i].remove(item)
+                    
+                    while len( step_solver.possibilities[i] ) == 0:
 
-                    if len( step_solver.possibilities[i] ) == 0:
-                        print('here is a problem')
-                        # TODO: write the logic to backtrack here!
+                        step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
 
-                    i = guesses[-1][0]
+                        i = guesses[-1][0]
+
+                        bad_guess = guesses.pop()
+
+                        step_solver.possibilities[i] = copy.copy(root_solver.possibilities[i])
+
+                        to_remove = []
+                        for possibility in step_solver.possibilities[i]:
+                            if int(possibility) <= int(bad_guess[1]):
+                                to_remove.append(possibility)
+
+                        for item in to_remove:
+                            step_solver.possibilities[i].remove(item)
+
+                    i = guesses[-1][0] # breaks here
+                    # TODO: fix it so that if the stack is empty, it doesn't break
 
             
         step_solver.print_possibilities()
