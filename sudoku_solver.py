@@ -553,10 +553,13 @@ class BacktrackSolver:
 
                         for item in to_remove:
                             step_solver.possibilities[i].remove(item)
-
-                    i = guesses[-1][0] # breaks here
+                    if guesses:
+                        i = guesses[-1][0] # breaks here
+                    else:
+                        i = 0
                     # TODO: fix it so that if the stack is empty, it doesn't break
-
+                else:
+                    i += 1
             
         step_solver.print_possibilities()
 
