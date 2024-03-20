@@ -49,8 +49,7 @@ def solved():
 @app.route('/advanced_solver/',methods=['GET','POST'])
 def advanced_solver():
     return render_template('solved.html')
-    # TODO: make an advanced solver using a backtracking algorithm
-        # Which takes advantage of having reduced solutions from the beginning.
+    # TODO: connect backtracking solver to frontend
     # TODO: figure out how flask does rest in this situation
     '''
     That is, how can I go from a webpage that the SERVER creates 

@@ -61,8 +61,7 @@ class SudokuSolver:
 
     def copy_solver(self) -> 'SudokuSolver':
         """
-        TODO: docstring, type hint, make it actually efficient in returning a copy.
-            To do that you'll have to change the __init__ so that it can accept another puzzle basically
+        TODO: docstring
         TODO: test
         """
         copy_solver = SudokuSolver()
@@ -496,12 +495,13 @@ class BacktrackSolver:
                     If there's not any:
                         restore old possibilities
                 If there's more possibilities try them, else keep moving back
-        
+        TODO: rewrite algorithm
         '''
 
-    def solve_by_backtrack(self):
+    def solve_by_backtrack(self) -> list:
         """
-        TODO: docstring
+        TODO: docstring, other documentation
+        TODO: optimize this
         """
         root_solver = self.solver.copy_solver()
         step_solver = self.solver.copy_solver()
@@ -510,18 +510,16 @@ class BacktrackSolver:
         guesses = []
        
         while i < 81: 
-            #print( 'i:', i, step_solver.possibilities[i])
-
             if (step_solver.possibilities[i]  == root_solver.possibilities[i]
                 and len(step_solver.possibilities[i]) == 1 ):
-                i += 1 # we need to make sure to not skip 9's
+                i += 1 
             elif (i,step_solver.possibilities[i][0]) in guesses:
                 i += 1
             else:
                 guesses.append( (i,step_solver.possibilities[i][0]) )
                 step_solver.possibilities[i] = [step_solver.possibilities[i][0]]
 
-                valid_guess = step_solver.check_valid_solution()
+                valid_guess = step_solver.check_valid_solution() # TODO: optimize right here. this is not efficient 
 
                 if not valid_guess:
                     bad_guess = guesses.pop()
@@ -554,24 +552,9 @@ class BacktrackSolver:
                         for item in to_remove:
                             step_solver.possibilities[i].remove(item)
                     if guesses:
-                        i = guesses[-1][0] # breaks here
+                        i = guesses[-1][0]
                     else:
                         i = 0
-                    # TODO: fix it so that if the stack is empty, it doesn't break
                 else:
                     i += 1
-            
-        step_solver.print_possibilities()
-
-    def find_contradiction(self, cell, guess, reduced_puzzle) -> bool:
-        '''
-        TODO: docstring
-        '''
-        bad_row = self.row_contradiction(cell, guess, reduced_puzzle)
-        return False
-
-    def row_contradiction(self, cell, guess, reduced_puzzle) -> bool:
-        '''
-        TODO: docstring
-        '''
-        pass
+        return step_solver.get_possibilities()
