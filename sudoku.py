@@ -6,9 +6,15 @@ from flask_wtf import FlaskForm
 from wtforms import TextAreaField, SubmitField
 from wtforms.validators import DataRequired
 
+from flask import session
+from flask_session import Session
+from redis import Redis
+
 import sudoku_solver
 
 app = Flask(__name__)
+SESSION_TYPE = 'redis'
+SESSION_REDIS = Redis(host='localhost', port=6379)
 app.config['SECRET_KEY'] = 'hard to guess huh'
 
 bootstrap = Bootstrap(app)
@@ -37,6 +43,7 @@ def solve_helper():
         my_puzzle = sudoku_solver.SudokuSolver(puzzle_string = form.sudoku_puzzle.data)
         puzzle_solution = my_puzzle.get_possibilities_for_web() # TODO: make new function to make possibilities pretty
         reduced_puzzle = my_puzzle.get_reduced_puzzle()
+        session['puzzle'] = form.sudoku_puzzle.data
         return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle=reduced_puzzle)
     name = None
     numbers = [i for i in range(0, 81)]
@@ -48,7 +55,11 @@ def solved():
 
 @app.route('/advanced_solver/',methods=['GET','POST'])
 def advanced_solver():
-    return render_template('solved.html')
+    numbers = session.get('puzzle')
+    print(numbers)
+    my_puzzle = sudoku_solver.BacktrackSolver(puzzle = numbers)
+    puzzle_solution = my_puzzle.solve_by_backtrack() # TODO: make new function to make possibilities pretty
+    return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle = my_puzzle.solver.get_reduced_puzzle())
     # TODO: connect backtracking solver to frontend
     # TODO: figure out how flask does rest in this situation
     '''

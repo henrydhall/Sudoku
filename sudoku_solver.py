@@ -557,4 +557,5 @@ class BacktrackSolver:
                         i = 0
                 else:
                     i += 1
+        self.solver.possibilities = step_solver.get_possibilities()
         return step_solver.get_possibilities()
