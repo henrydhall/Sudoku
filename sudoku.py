@@ -41,7 +41,7 @@ def solve_helper():
     form = SudokuForm()
     if form.validate_on_submit():
         my_puzzle = sudoku_solver.SudokuSolver(puzzle_string = form.sudoku_puzzle.data)
-        puzzle_solution = my_puzzle.get_possibilities_for_web() # TODO: make new function to make possibilities pretty
+        puzzle_solution = my_puzzle.get_possibilities_for_web()
         reduced_puzzle = my_puzzle.get_reduced_puzzle()
         session['puzzle'] = form.sudoku_puzzle.data
         return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle=reduced_puzzle)
@@ -56,14 +56,6 @@ def solved():
 @app.route('/advanced_solver/',methods=['GET','POST'])
 def advanced_solver():
     numbers = session.get('puzzle')
-    print(numbers)
     my_puzzle = sudoku_solver.BacktrackSolver(puzzle = numbers)
-    puzzle_solution = my_puzzle.solve_by_backtrack() # TODO: make new function to make possibilities pretty
+    puzzle_solution = my_puzzle.solve_by_backtrack() # TODO: make sure this is best practice
     return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle = my_puzzle.solver.get_reduced_puzzle())
-    # TODO: connect backtracking solver to frontend
-    # TODO: figure out how flask does rest in this situation
-    '''
-    That is, how can I go from a webpage that the SERVER creates 
-        (from info the CLIENT provides)
-        to another webpage that the SERVER creates
-    '''
