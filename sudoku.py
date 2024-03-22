@@ -40,11 +40,15 @@ def index():
 def solve_helper():
     form = SudokuForm()
     if form.validate_on_submit():
-        my_puzzle = sudoku_solver.SudokuSolver(puzzle_string = form.sudoku_puzzle.data)
-        puzzle_solution = my_puzzle.get_possibilities_for_web()
-        reduced_puzzle = my_puzzle.get_reduced_puzzle()
-        session['puzzle'] = form.sudoku_puzzle.data
-        return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle=reduced_puzzle)
+        try:
+            my_puzzle = sudoku_solver.SudokuSolver(puzzle_string = form.sudoku_puzzle.data)
+            puzzle_solution = my_puzzle.get_possibilities_for_web()
+            reduced_puzzle = my_puzzle.get_reduced_puzzle()
+            session['puzzle'] = form.sudoku_puzzle.data
+            return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle=reduced_puzzle)
+        except:
+            numbers = [i for i in range(0, 81)]
+            return render_template('solve_input.html', numbers=numbers, form=form)
     name = None
     numbers = [i for i in range(0, 81)]
     return render_template('solve_input.html', numbers=numbers, form=form)
