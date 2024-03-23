@@ -9,11 +9,21 @@
         {% for i in range(0,9) %}
             <tr>
                 {% for j in range(0,9) %}
-                    {% if numbers[ i*9 + j ]|length != 1 %} 
-                        <td class="small">{{ numbers[ i*9 + j ] }}</td> 
+                    {% if j % 3 == 0 %}
+                        {% if numbers[ i*9 + j ]|length != 1 %} 
+                            <td class="small", style="border-left-width: 4px;">{{ numbers[ i*9 + j ] }}</td> 
+                        {% endif %}
+                        {% if numbers[ i*9 + j ]|length == 1 %} 
+                            <td class="regular", style="border-left-width: 4px;">{{ numbers[ i*9 + j ][0] }}</td> 
+                        {% endif %}
                     {% endif %}
-                    {% if numbers[ i*9 + j ]|length == 1 %} 
-                        <td class="regular">{{ numbers[ i*9 + j ][0] }}</td> 
+                    {% if j % 3 != 0 %}
+                        {% if numbers[ i*9 + j ]|length != 1 %} 
+                            <td class="small">{{ numbers[ i*9 + j ] }}</td> 
+                        {% endif %}
+                        {% if numbers[ i*9 + j ]|length == 1 %} 
+                            <td class="regular">{{ numbers[ i*9 + j ][0] }}</td> 
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             </tr>

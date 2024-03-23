@@ -3,16 +3,26 @@ table
     width: 54%;
     aspect-ratio: 1/1;
     font-size: 40px;
-    border-top: 4px solid black;
-    border-bottom: 4px solid black;
-    border-left: 4px solid black;
-    border-right: 4px solid black;
+    border-top: 5px solid black;
+    border-bottom: 5px solid black;
+    border-left: 5px solid black;
+    border-right: 5px solid black;
     text-align: center;
+}
+
+tr:nth-child(3n + 3)
+{
+    border-bottom: 5px solid black;
+}
+
+tr
+{
+    border: 1px solid black;
 }
 
 td.regular
 {
-    border: 1px solid black;
+    border-right: 1px solid black;
 }
 
 td.small
@@ -24,15 +34,10 @@ td.small
 
 td 
 {
-    border: 1px solid black;
+    border-left: 1px solid black;
     white-space: pre;
     aspect-ratio: 1/1;
     width: 6%;
-}
-
-td:nth-child(3n)
-{
-    border-right-width: 4px;
 }
 
 textarea
