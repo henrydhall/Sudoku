@@ -6,10 +6,9 @@ Experimenting with solving and generating Sudoku puzzles with Python.
 
 ## TODO
 * Up next: check test coverage, get coverage back up.
-* Make table more readable with lines between blocks.
 * Handle invalid solutions
     - Add error message.
 * Make form prettier.
-* Make bottom margin bigger.
+* Make it so you can press a button and copy the reduced puzzle.
 * Add database
 * Catch bad solutions like for .23456789....................1

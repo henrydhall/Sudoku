@@ -1,6 +1,6 @@
 table
 {
-    width: 54%;
+    width: 90%;
     aspect-ratio: 1/1;
     font-size: 40px;
     border-top: 5px solid black;
@@ -37,10 +37,29 @@ td
     border-left: 1px solid black;
     white-space: pre;
     aspect-ratio: 1/1;
-    width: 6%;
+    width: 10%;
 }
 
 textarea
 {
     font-family: "Arial" !important;
+}
+
+div.grid
+{
+    width: 50%;
+    display: inline-block;
+    margin: 0%;
+}
+
+div.options
+{
+    display: inline-block;
+    width: 50%;
+    margin: 0%;
+}
+
+table.home
+{
+    width: 50%;
 }

@@ -4,44 +4,44 @@
 
 {% block page_content %}
 
-<table>
-    <tbody>
-        {% for i in range(0,9) %}
-            <tr>
-                {% for j in range(0,9) %}
-                    {% if j % 3 == 0 %}
-                        {% if numbers[ i*9 + j ]|length != 1 %} 
-                            <td class="small", style="border-left-width: 4px;">{{ numbers[ i*9 + j ] }}</td> 
-                        {% endif %}
-                        {% if numbers[ i*9 + j ]|length == 1 %} 
-                            <td class="regular", style="border-left-width: 4px;">{{ numbers[ i*9 + j ][0] }}</td> 
-                        {% endif %}
-                    {% endif %}
-                    {% if j % 3 != 0 %}
-                        {% if numbers[ i*9 + j ]|length != 1 %} 
-                            <td class="small">{{ numbers[ i*9 + j ] }}</td> 
-                        {% endif %}
-                        {% if numbers[ i*9 + j ]|length == 1 %} 
-                            <td class="regular">{{ numbers[ i*9 + j ][0] }}</td> 
-                        {% endif %}
-                    {% endif %}
+<div>
+
+    <div class="grid">
+        <table>
+            <tbody>
+                {% for i in range(0,9) %}
+                    <tr>
+                        {% for j in range(0,9) %}
+                            {% if j % 3 == 0 %}
+                                {% if numbers[ i*9 + j ]|length != 1 %} 
+                                    <td class="small", style="border-left-width: 4px;">{{ numbers[ i*9 + j ] }}</td> 
+                                {% endif %}
+                                {% if numbers[ i*9 + j ]|length == 1 %} 
+                                    <td class="regular", style="border-left-width: 4px;">{{ numbers[ i*9 + j ][0] }}</td> 
+                                {% endif %}
+                            {% endif %}
+                            {% if j % 3 != 0 %}
+                                {% if numbers[ i*9 + j ]|length != 1 %} 
+                                    <td class="small">{{ numbers[ i*9 + j ] }}</td> 
+                                {% endif %}
+                                {% if numbers[ i*9 + j ]|length == 1 %} 
+                                    <td class="regular">{{ numbers[ i*9 + j ][0] }}</td> 
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
                 {% endfor %}
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
 
-<br>
-
-<h4>Reduced Puzzle</h4>
-<p>{{ reduced_puzzle }}</p>
-
-<br><br>
-
-<a href="/solve_helper">Solve Another</a>
-<br>
-<a href="/advanced_solver">Advanced Solver</a>
-
-<br><br>
+    <div style="float: right;" class="options">
+        <h4>Reduced Puzzle</h4>
+        <p>{{ reduced_puzzle }}</p>
+        <a href="/solve_helper">Solve Another</a><br>
+        <a href="/advanced_solver">Advanced Solver</a>  
+    </div>
+    
+</div>
 
 {% endblock %}
