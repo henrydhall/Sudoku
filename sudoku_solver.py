@@ -61,7 +61,9 @@ class SudokuSolver:
 
     def copy_solver(self) -> 'SudokuSolver':
         """
-        TODO: docstring
+        Creates a copy of a SudokuSolver object by copying all of its attributes.
+
+        Returns: SudokuSolver object.
         TODO: test
         """
         copy_solver = SudokuSolver()
@@ -157,12 +159,19 @@ class SudokuSolver:
         return True
 
     def get_cell_box_number(self, cell_number):
-        # TODO: get this based on row and column number
-        raise NotImplementedError('TODO: get_cell_box_number')
+        """
+        Returns a cell's column number calculated from the cell number.
+
+        Returns: int. Column number of the cell.
+        TODO: test.
+        """
+        return cell_number % 9
 
     def get_cell_row_number(self, cell_number) -> int:
         """
-        TODO: docstring
+        Returns the row number of a cell calculated from its cell number.
+
+        Returns: int. A row number 0-8.
         """
         return cell_number // 9
 
@@ -263,6 +272,11 @@ class SudokuSolver:
                 i = i + 1
 
     def reduce_column(self, column_number) -> None:
+        """
+        Reduces possibilities in a column.
+
+        param: column_number. Number of the column to reduce 0-8.
+        """
         i = column_number
 
         numbers_to_eliminate = []
@@ -342,7 +356,14 @@ class SudokuSolver:
                 i = i + 7
 
     def find_unique_possibilities_by_box(self, box_number) -> None:
-        # TODO: test this more, this one of all of them is the scariest so far
+        """
+        Looks in a box and finds a number that has only one place that it can be, and solves that cell.
+
+        Params: int box_number. The number of the box to look in.
+
+        Returns: None
+        TODO: test more, this one is scary.
+        """
         box_start = self.get_box_start_index(box_number)
         all_possibilities = []
         numbers_to_reduce = []
@@ -500,7 +521,9 @@ class BacktrackSolver:
 
     def solve_by_backtrack(self) -> list:
         """
-        TODO: docstring, other documentation
+        Solves a sudoku puzzle using a brute force back tracking method.
+
+        Returns: list. A solved sudoku puzzle.
         TODO: optimize this
         """
         root_solver = self.solver.copy_solver()

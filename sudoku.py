@@ -61,5 +61,5 @@ def solved():
 def advanced_solver():
     numbers = session.get('puzzle')
     my_puzzle = sudoku_solver.BacktrackSolver(puzzle = numbers)
-    puzzle_solution = my_puzzle.solve_by_backtrack() # TODO: make sure this is best practice
+    puzzle_solution = my_puzzle.solve_by_backtrack()
     return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle = my_puzzle.solver.get_reduced_puzzle())
