@@ -182,6 +182,33 @@ def test_check_valid_solution():
     test_puzzle = sudoku_solver.SudokuSolver(puzzle_string = test_string)
     assert test_puzzle.check_valid_solution() is True
 
+def test_get_cell_column_number():
+    test_puzzle = sudoku_solver.SudokuSolver(puzzle = '123')
+    assert test_puzzle.get_cell_column_number(0)  == 0
+    assert test_puzzle.get_cell_column_number(14) == 5
+    assert test_puzzle.get_cell_column_number(27) == 0
+    assert test_puzzle.get_cell_column_number(28) == 1
+    assert test_puzzle.get_cell_column_number(31) == 4
+    assert test_puzzle.get_cell_column_number(40) == 4
+    assert test_puzzle.get_cell_column_number(50) == 5
+    assert test_puzzle.get_cell_column_number(60) == 6
+    assert test_puzzle.get_cell_column_number(70) == 7
+    assert test_puzzle.get_cell_column_number(80) == 8
+    assert test_puzzle.get_cell_column_number(62) == 8
+
+def test_get_cell_row_number():
+    test_puzzle = sudoku_solver.SudokuSolver(puzzle = '123')
+    assert test_puzzle.get_cell_row_number(0)  == 0
+    assert test_puzzle.get_cell_row_number(11)  == 1
+    assert test_puzzle.get_cell_row_number(12)  == 1
+    assert test_puzzle.get_cell_row_number(23)  == 2
+    assert test_puzzle.get_cell_row_number(33)  == 3
+    assert test_puzzle.get_cell_row_number(44)  == 4
+    assert test_puzzle.get_cell_row_number(54)  == 6
+    assert test_puzzle.get_cell_row_number(65)  == 7
+    assert test_puzzle.get_cell_row_number(75)  == 8
+    assert test_puzzle.get_cell_row_number(80)  == 8
+    assert test_puzzle.get_cell_row_number(66)  == 7
 
 if __name__ == '__main__':
     test_SudokuSolver_1()
@@ -194,4 +221,5 @@ if __name__ == '__main__':
     # test_print_possibilities()
     test_check_valid_puzzle()
     test_get_reduced_puzzle()
-    # test_check_valid_solution()
+    test_check_valid_solution()
+    test_get_cell_column_number()

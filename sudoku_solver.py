@@ -158,12 +158,11 @@ class SudokuSolver:
                 return False
         return True
 
-    def get_cell_box_number(self, cell_number):
+    def get_cell_column_number(self, cell_number):
         """
         Returns a cell's column number calculated from the cell number.
 
         Returns: int. Column number of the cell.
-        TODO: test.
         """
         return cell_number % 9
 
@@ -175,8 +174,8 @@ class SudokuSolver:
         """
         return cell_number // 9
 
-    def get_cell_column_number(self, column_number):
-        raise NotImplementedError('TODO: get_cell_column_number')
+    def get_cell_box_number(self, cell_number):
+        raise NotImplementedError('TODO: get_cell_box_number')
 
     def __str__(self) -> str:
         """

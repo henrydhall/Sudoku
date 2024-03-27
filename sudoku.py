@@ -42,6 +42,8 @@ def solve_helper():
     if form.validate_on_submit():
         try:
             my_puzzle = sudoku_solver.SudokuSolver(puzzle_string = form.sudoku_puzzle.data)
+            if not my_puzzle.check_valid_solution():
+                raise ValueError('No valid solution.')
             puzzle_solution = my_puzzle.get_possibilities_for_web()
             reduced_puzzle = my_puzzle.get_reduced_puzzle()
             session['puzzle'] = form.sudoku_puzzle.data
@@ -62,4 +64,6 @@ def advanced_solver():
     numbers = session.get('puzzle')
     my_puzzle = sudoku_solver.BacktrackSolver(puzzle = numbers)
     puzzle_solution = my_puzzle.solve_by_backtrack()
+    if not my_puzzle.solver.check_valid_solution():
+        raise ValueError('No valid solution.') # TODO: should double check this logic.
     return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle = my_puzzle.solver.get_reduced_puzzle())
