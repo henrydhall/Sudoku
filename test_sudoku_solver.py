@@ -210,6 +210,18 @@ def test_get_cell_row_number():
     assert test_puzzle.get_cell_row_number(80)  == 8
     assert test_puzzle.get_cell_row_number(66)  == 7
 
+def test_copy_solver():
+    test_puzzle = sudoku_solver.SudokuSolver( puzzle_string =  '12345')
+    copy_puzzle = test_puzzle.copy_solver()
+    assert test_puzzle.puzzle_string == copy_puzzle.puzzle_string
+    assert test_puzzle.puzzle_array == copy_puzzle.puzzle_array
+    assert test_puzzle.possibilities == copy_puzzle.possibilities
+    assert test_puzzle.get_reduced_puzzle() == copy_puzzle.get_reduced_puzzle()
+
+def test_get_possibilities_for_web():
+    # TODO: test getting possibilities for web display
+    pass
+
 if __name__ == '__main__':
     test_SudokuSolver_1()
     test_SudokuSolver_2()
@@ -223,3 +235,4 @@ if __name__ == '__main__':
     test_get_reduced_puzzle()
     test_check_valid_solution()
     test_get_cell_column_number()
+    test_copy_solver()

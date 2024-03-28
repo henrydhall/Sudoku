@@ -7,9 +7,7 @@ Experimenting with solving and generating Sudoku puzzles with Python.
 ## TODO
 * Documentation
 * 404 page
-* Up next: check test coverage, get coverage back up.
-* Handle invalid solutions
-    - Add error message.
+* Get test coverage back up.
+* Add error message for bad puzzles.
 * Make form prettier.
 * Add database
-* Catch bad solutions like for .23456789....................1

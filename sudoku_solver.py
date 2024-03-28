@@ -64,7 +64,6 @@ class SudokuSolver:
         Creates a copy of a SudokuSolver object by copying all of its attributes.
 
         Returns: SudokuSolver object.
-        TODO: test
         """
         copy_solver = SudokuSolver()
         copy_solver.puzzle_string = copy.deepcopy( self.puzzle_string )
