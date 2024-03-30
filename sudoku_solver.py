@@ -498,24 +498,6 @@ class BacktrackSolver:
             self.possibilities = self.solver.possibilities
         else:
             raise KeyError('Use \'puzzle = <puzzle>\' or \'solver = <solver>\'')
-        
-        ''' Algorithm is at its best here
-        Start at index = 0
-        while index < 81:
-            if it's solved, move to the next square
-                index += 1
-            else: there are multiple possibilities pick one
-                Put (index, guess) in stack
-                Look for direct contradictions
-                If there is a direct contradiction
-                    index, bad guess = pop (index, guess)
-                    remove bad guess
-                Check for more possibilities at index
-                    If there's not any:
-                        restore old possibilities
-                If there's more possibilities try them, else keep moving back
-        TODO: rewrite algorithm
-        '''
 
     def solve_by_backtrack(self) -> list:
         """
@@ -580,3 +562,30 @@ class BacktrackSolver:
                     i += 1
         self.solver.possibilities = step_solver.get_possibilities()
         return step_solver.get_possibilities()
+    
+    """
+    Backtracking algorithm
+
+    Make two copies of the solver
+    i = 0, guesses = empty stack
+
+    while i < 81
+        if cell i is solved or a guess has been made for it
+            skip it: i+=1
+        else
+            add (i, guess) to guesses
+            set the cell to match that guess
+            see if it's a valid guess
+
+            if not valid:
+                pop the bad guess from guesses
+                reset the cell without the invalid guesses
+
+                while cell i is empty (due to removing bad guesses)
+                    continue popping and resetting
+                
+                if the stack is empty
+                    just set i=0
+            else
+                i+=1
+    """
