@@ -218,9 +218,35 @@ def test_copy_solver():
     assert test_puzzle.possibilities == copy_puzzle.possibilities
     assert test_puzzle.get_reduced_puzzle() == copy_puzzle.get_reduced_puzzle()
 
-def test_get_possibilities_for_web():
-    # TODO: test getting possibilities for web display
-    pass
+def test_BacktrackSolver():
+    # Test from solver
+    my_solver = sudoku_solver.SudokuSolver(puzzle_string = '123')
+    test_solver = sudoku_solver.BacktrackSolver(solver = my_solver)
+    assert test_solver.puzzle == my_solver.puzzle_string
+    assert test_solver.possibilities == my_solver.possibilities
+
+    # Test from puzzle string
+    test_solver = sudoku_solver.BacktrackSolver(puzzle = '124')
+    assert test_solver.puzzle_string == '124'
+    my_solver = sudoku_solver.SudokuSolver(puzzle_string='124')
+    assert test_solver.possibilities == my_solver.possibilities
+
+    # Test type error
+    with pytest.raises(TypeError):
+        test_solver = sudoku_solver.BacktrackSolver( solver = '123456' )
+
+    # Test KeyError
+    with pytest.raises(KeyError):
+        test_solver = sudoku_solver.BacktrackSolver(this_is_wrong = 'hi')
+
+def test_solve_by_backtrack():
+    test_solver = sudoku_solver.BacktrackSolver(puzzle = '123')
+    test_solver.solve_by_backtrack()
+    assert test_solver.solver.get_reduced_puzzle() == '123456789456789123789123456214365897365897214897214365531642978642978531978531642'
+
+    test_solver = sudoku_solver.BacktrackSolver(puzzle = '.8.5.1...2.....83........4.8...9..57..5........6..32.........28..91.57.....96....')
+    test_solver.solve_by_backtrack()
+    assert test_solver.solver.get_reduced_puzzle() == '984531672257649831613827549832496157745218396196753284561374928429185763378962415'
 
 if __name__ == '__main__':
     test_SudokuSolver_1()
@@ -236,3 +262,4 @@ if __name__ == '__main__':
     test_check_valid_solution()
     test_get_cell_column_number()
     test_copy_solver()
+    test_BacktrackSolver()
