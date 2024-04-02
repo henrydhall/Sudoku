@@ -8,5 +8,7 @@ Experimenting with solving and generating Sudoku puzzles with Python.
 * 404 page
 * Add error message for bad puzzles.
 * Make form prettier.
-* Add database
+* Add user and roles
+* Add logging in
+* Add sudoku database
 * Test possibility strings for web

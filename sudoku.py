@@ -13,17 +13,19 @@ from redis import Redis
 import sudoku_solver
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'hard to guess huh'
+
 SESSION_TYPE = 'redis'
 SESSION_REDIS = Redis(host='localhost', port=6379)
-app.config['SECRET_KEY'] = 'hard to guess huh'
 
 bootstrap = Bootstrap(app)
 
+# TODO: add user database
+# TODO: add user login/authentication
 
 class SudokuForm(FlaskForm):
     sudoku_puzzle = TextAreaField("SudokuPuzzle", validators=[DataRequired()])
     submit = SubmitField('Submit')
-
 
 @app.route('/')
 def index():
@@ -34,7 +36,6 @@ def index():
     numbers[66] = '8'
     numbers[80] = '9'
     return render_template('index.html', numbers=numbers)
-
 
 @app.route('/solve_helper', methods=['GET', 'POST'])
 def solve_helper():
