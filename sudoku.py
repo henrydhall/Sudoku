@@ -67,3 +67,11 @@ def advanced_solver():
     if not my_puzzle.solver.check_valid_solution():
         raise ValueError('No valid solution.') # TODO: should double check this logic.
     return render_template('solved.html', numbers=puzzle_solution, reduced_puzzle = my_puzzle.solver.get_reduced_puzzle())
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('404.html')
+
+@app.errorhandler(500)
+def not_found(e):
+    return render_template('500.html')

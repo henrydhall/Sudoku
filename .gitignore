@@ -1,6 +1,13 @@
 # My files.
 scrap.html
 sudoku_env/
+back_track_playarea.py
+pytest_command.txt
+pytest.txt
+req.txt
+sudoku_database.py
+test.txt
+test2.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

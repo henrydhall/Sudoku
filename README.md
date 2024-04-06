@@ -33,7 +33,6 @@ Run the following command
     pytest --cov-report html --cov
 
 ## TODO
-* 404 page
 * Add error message for bad puzzles.
 * Make form prettier.
 * Add database
